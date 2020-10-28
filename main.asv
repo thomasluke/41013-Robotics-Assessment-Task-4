@@ -26,7 +26,6 @@ view(az,el);
 
 mdl_puma560;
 robot = p560;
-robot.tool;
 
 % Student number = 12876785
 baseLocation = [1.287,6.785,1];
@@ -45,6 +44,7 @@ toolOffset = [0,0,(200*tan(blastStreamAngle))/1000]; % Tool offset in meters
 toolOffset = [0,0,0.2]; % Tool offset in meters
 
 toolTransform = transl(toolOffset);
+robot.tool=toolTransform;
 
 robotTransform = robot.fkine(robot.getpos);
 Transform = robotTransform*toolTransform;
@@ -78,7 +78,7 @@ robotDrumTransform = robotBaseTransform * drumTransform
 
 robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
 
-windowCorner = [-1.983,6.84,0.591];
+windowCorner = [0.8,6.84,0.591];
 startPose = windowCorner;
 startPose(3) = startPose(3) + 0.5;
 robotPose = CalculateQ(robot,startPose);
@@ -167,7 +167,7 @@ disp(rotationError);
 
 end
 
-function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,toolOffset,launching)
+function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Modified from 41013 Robotics week 9 material
@@ -176,12 +176,16 @@ function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(ro
 
 % Calculate distance to point to scale the number of steps for
 % each trajectory
-toolTransform = transl(toolOffset);
+
+robotTransform = robot.fkine(robot.getpos);
+rpy = tr2rpy(robotTransform);
+yaw=rpy(3);
 robotTransform = robot.fkine(robot.getpos)*toolTransform;
 
 % Transform = robotTransform*toolTransform;
 % robotTransform = robot.fkine(robot.getpos);
 startPoint = robotTransform(1:3,4)';
+% toolTransform = transl(-toolOffset);
 endTransform = transl(endPoint)*toolTransform;
 endPoint = endTransform(1:3,4)';
 

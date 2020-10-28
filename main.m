@@ -26,7 +26,6 @@ view(az,el);
 
 mdl_puma560;
 robot = p560;
-robot.tool;
 
 % Student number = 12876785
 baseLocation = [1.287,6.785,1];
@@ -45,6 +44,7 @@ toolOffset = [0,0,(200*tan(blastStreamAngle))/1000]; % Tool offset in meters
 toolOffset = [0,0,0.2]; % Tool offset in meters
 
 toolTransform = transl(toolOffset);
+robot.tool=toolTransform;
 
 robotTransform = robot.fkine(robot.getpos);
 Transform = robotTransform*toolTransform;
@@ -92,7 +92,7 @@ velocity = 1;
 axis = [0,0,0]; % Move along x axis
 launching = false;
 
-[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,toolOffset,launching);
+[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
 
 AnimateTrajectory(robot,qMatrix);
 
@@ -167,7 +167,7 @@ disp(rotationError);
 
 end
 
-function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,toolOffset,launching)
+function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Modified from 41013 Robotics week 9 material
@@ -176,15 +176,18 @@ function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(ro
 
 % Calculate distance to point to scale the number of steps for
 % each trajectory
-toolTransform = transl(toolOffset);
-robotTransform = robot.fkine(robot.getpos)*toolTransform;
 
-% Transform = robotTransform*toolTransform;
 % robotTransform = robot.fkine(robot.getpos);
+% rpy = tr2rpy(robotTransform);
+% yaw=rpy(3);
+% robotTransform = robot.fkine(robot.getpos)*toolTransform;
+% 
+% % Transform = robotTransform*toolTransform;
+robotTransform = robot.fkine(robot.getpos);
 startPoint = robotTransform(1:3,4)';
-% toolTransform = transl(-toolOffset);
-endTransform = transl(endPoint)*toolTransform;
-endPoint = endTransform(1:3,4)';
+% % toolTransform = transl(-toolOffset);
+% endTransform = transl(endPoint)*toolTransform;
+% endPoint = endTransform(1:3,4)';
 
 distanceToEndPoint = norm(endPoint-startPoint);
 
@@ -242,15 +245,14 @@ for i=1:steps
     theta(2,i) = axis(1);                                        % Pitch angle   % pi/2 alligns x to trajectory
     theta(3,i) = axis(3);                                        % Yaw angle % pi/2 alligns z to trajectory
     
-    trajectoryPlot = plot3(x(1,:),x(2,:),x(3,:),'k.','LineWidth',1);
 end
-for i=1:steps
-    x(1,i) = x(1,i)-toolOffset(1); % Points in x
-    x(2,i) = x(2,i)-toolOffset(2); % Points in y
-    x(3,i) = x(3,i)-toolOffset(3);% Points in z    elseif launching == true
-    
-   
-end
+% for i=1:steps
+%     x(1,i) = x(1,i)-toolOffset(1); % Points in x
+%     x(2,i) = x(2,i)-toolOffset(2); % Points in y
+%     x(3,i) = x(3,i)-toolOffset(3);% Points in z    elseif launching == true
+%     
+%    
+% end
 
 %     test = 1;
 %     if velocity>3
@@ -298,14 +300,12 @@ for i = 1:steps-1
 end
 
 Transfrom = robot.fkine(qMatrix(end,:));
-endPosition = Transfrom(1:3,4)';
-
-endPointOffset = transl(endPoint)*transl(-toolOffset);
-endPointOffset = endPointOffset(1:3,4)';
-
-error = endPosition-endPointOffset;
-errorMax = max(abs(error));
-
+            endPosition = Transfrom(1:3,4)';
+            
+            error = endPosition-endPoint;
+            errorMax = max(abs(error));
+            
+            trajectoryPlot = plot3(x(1,:),x(2,:),x(3,:),'k.','LineWidth',1);
 % Display errors
 disp('End Point Translation Error: ')
 disp(error);

@@ -35246,3 +35246,839 @@ End Point Rotation Error (degrees):
      0     0     0
 
 <a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\animate.m',148,1)">148 </a>                    drawnow
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.3439    0.0166   -0.1378
+    0.3439   -0.0000    0.0096   -0.3282
+    0.0166    0.0096   -0.0000    0.1257
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.1378   -0.3282    0.1257
+
+Rotation Error (degrees): 
+  -90.0001   59.8851  -90.0010
+
+End Point Translation Error: 
+   1.0e-03 *
+
+    0.1664   -0.1414   -0.2552
+
+End Point Maximum Translation Error: 
+   2.5518e-04
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.3439    0.0166   -0.1378
+    0.3439   -0.0000    0.0096   -0.3282
+    0.0166    0.0096   -0.0000    0.1257
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.1378   -0.3282    0.1257
+
+Rotation Error (degrees): 
+  -90.0001   59.8851  -90.0010
+
+End Point Translation Error: 
+   1.0e-03 *
+
+    0.1664   -0.1414   -0.2552
+
+End Point Maximum Translation Error: 
+   2.5518e-04
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.3439    0.0166   -0.1378
+    0.3439   -0.0000    0.0096   -0.3282
+    0.0166    0.0096   -0.0000    0.1257
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.1378   -0.3282    0.1257
+
+Rotation Error (degrees): 
+  -90.0001   59.8851  -90.0010
+
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',90,1)">90  </a>endPoint(2) = endPoint(2) - 0.3;
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+robot.fkine(robot.getpos)
+
+ans =
+
+   -1.0000    0.0000   -0.0000    0.8000
+    0.0000    1.0000   -0.0000    6.8400
+    0.0000   -0.0000   -1.0000    1.0910
+         0         0         0    1.0000
+
+if system_dependent('IsDebugMode')==1, dbstep; end
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',187,1)">187 </a>endPoint = endTransform(1:3,4)';
+tr2rpy(robotTransform)
+
+ans =
+
+    3.1416   -0.0000   -3.1416
+
+if system_dependent('IsDebugMode')==1, dbquit all; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.3439    0.0166   -0.1378
+    0.3439   -0.0000    0.0096   -0.3282
+    0.0166    0.0096   -0.0000    0.1257
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.1378   -0.3282    0.1257
+
+Rotation Error (degrees): 
+  -90.0001   59.8851  -90.0010
+
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',90,1)">90  </a>endPoint(2) = endPoint(2) - 0.3;
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.3439    0.0166   -0.1378
+    0.3439   -0.0000    0.0096   -0.3282
+    0.0166    0.0096   -0.0000    0.1257
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.1378   -0.3282    0.1257
+
+Rotation Error (degrees): 
+  -90.0001   59.8851  -90.0010
+
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',90,1)">90  </a>endPoint(2) = endPoint(2) - 0.3;
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mtimes')" style="font-weight:bold"> * </a>
+Incorrect dimensions for matrix multiplication. Check that the number of columns in the first matrix matches the number of rows in the second matrix. To perform
+elementwise multiplication, use '.*'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main>ResolveMotionRateControlCalculateTrajectory', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 183)" style="font-weight:bold">main>ResolveMotionRateControlCalculateTrajectory</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',183,0)">line 183</a>)
+robotTransform = robot.fkine(robot.getpos)*robotTransform(1:3,1:3)*toolTransform;
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 95)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',95,0)">line 95</a>)
+[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,toolOffset,launching);
+} 
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.3439    0.0166   -0.1378
+    0.3439   -0.0000    0.0096   -0.3282
+    0.0166    0.0096   -0.0000    0.1257
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.1378   -0.3282    0.1257
+
+Rotation Error (degrees): 
+  -90.0001   59.8851  -90.0010
+
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',90,1)">90  </a>endPoint(2) = endPoint(2) - 0.3;
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',187,1)">187 </a>startPoint = robotTransform(1:3,4)';
+if system_dependent('IsDebugMode')==1, dbquit all; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.3439    0.0166   -0.1378
+    0.3439   -0.0000    0.0096   -0.3282
+    0.0166    0.0096   -0.0000    0.1257
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.1378   -0.3282    0.1257
+
+Rotation Error (degrees): 
+  -90.0001   59.8851  -90.0010
+
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',183,1)">183 </a>robotTransform = robot.fkine(robot.getpos)*toolTransform;
+if system_dependent('IsDebugMode')==1, dbstep; end
+robot.fkine(robot.getpos)
+
+ans =
+
+   -1.0000    0.0000   -0.0000    0.8000
+    0.0000    1.0000   -0.0000    6.8400
+    0.0000   -0.0000   -1.0000    1.0910
+         0         0         0    1.0000
+
+p560.tool
+{Unable to resolve the name p560.tool.
+} 
+robot.tool
+
+ans =
+
+     1     0     0     0
+     0     1     0     0
+     0     0     1     0
+     0     0     0     1
+
+if system_dependent('IsDebugMode')==1, dbquit all; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.0400    0.8017   -0.0327
+    0.0400   -0.0000    0.3545    0.1997
+    0.8017    0.3545   -0.0000    0.2077
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0327    0.1997    0.2077
+
+Rotation Error (degrees): 
+  -90.0062   66.1441  -90.0461
+
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',183,1)">183 </a>robotTransform = robot.fkine(robot.getpos)*toolTransform;
+if system_dependent('IsDebugMode')==1, dbquit; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.0400    0.8017   -0.0327
+    0.0400   -0.0000    0.3545    0.1997
+    0.8017    0.3545   -0.0000    0.2077
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0327    0.1997    0.2077
+
+Rotation Error (degrees): 
+  -90.0062   66.1441  -90.0461
+
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main>ResolveMotionRateControlCalculateTrajectory')" style="font-weight:bold">main>ResolveMotionRateControlCalculateTrajectory</a>
+Too many input arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 95)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',95,0)">line 95</a>)
+[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,toolOffset,launching);
+} 
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.0400    0.8017   -0.0327
+    0.0400   -0.0000    0.3545    0.1997
+    0.8017    0.3545   -0.0000    0.2077
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0327    0.1997    0.2077
+
+Rotation Error (degrees): 
+  -90.0062   66.1441  -90.0461
+
+{Unrecognized function or variable 'startPoint'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main>ResolveMotionRateControlCalculateTrajectory', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 192)" style="font-weight:bold">main>ResolveMotionRateControlCalculateTrajectory</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',192,0)">line 192</a>)
+distanceToEndPoint = norm(endPoint-startPoint);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 95)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',95,0)">line 95</a>)
+[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
+} 
+opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',95,0)
+opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',192,0)
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.0400    0.8017   -0.0327
+    0.0400   -0.0000    0.3545    0.1997
+    0.8017    0.3545   -0.0000    0.2077
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0327    0.1997    0.2077
+
+Rotation Error (degrees): 
+  -90.0062   66.1441  -90.0461
+
+{Unrecognized function or variable 'toolOffset'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main>ResolveMotionRateControlCalculateTrajectory', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 251)" style="font-weight:bold">main>ResolveMotionRateControlCalculateTrajectory</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',251,0)">line 251</a>)
+    x(1,i) = x(1,i)-toolOffset(1); % Points in x
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 95)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',95,0)">line 95</a>)
+[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
+} 
+opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',251,0)
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.0400    0.8017   -0.0327
+    0.0400   -0.0000    0.3545    0.1997
+    0.8017    0.3545   -0.0000    0.2077
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0327    0.1997    0.2077
+
+Rotation Error (degrees): 
+  -90.0062   66.1441  -90.0461
+
+{Unrecognized function or variable 'toolOffset'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main>ResolveMotionRateControlCalculateTrajectory', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 306)" style="font-weight:bold">main>ResolveMotionRateControlCalculateTrajectory</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',306,0)">line 306</a>)
+endPointOffset = transl(endPoint)*transl(-toolOffset);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 95)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',95,0)">line 95</a>)
+[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
+} 
+opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',306,0)
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.0400    0.8017   -0.0327
+    0.0400   -0.0000    0.3545    0.1997
+    0.8017    0.3545   -0.0000    0.2077
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0327    0.1997    0.2077
+
+Rotation Error (degrees): 
+  -90.0062   66.1441  -90.0461
+
+{Unrecognized function or variable 'obj'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main>ResolveMotionRateControlCalculateTrajectory', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 302)" style="font-weight:bold">main>ResolveMotionRateControlCalculateTrajectory</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',302,0)">line 302</a>)
+Transfrom = obj.robot.model.fkine(obj.qMatrix(end,:));
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 95)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',95,0)">line 95</a>)
+[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
+} 
+opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',302,0)
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.0400    0.8017   -0.0327
+    0.0400   -0.0000    0.3545    0.1997
+    0.8017    0.3545   -0.0000    0.2077
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0327    0.1997    0.2077
+
+Rotation Error (degrees): 
+  -90.0062   66.1441  -90.0461
+
+{Unrecognized method, property, or field 'model' for class 'SerialLink'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main>ResolveMotionRateControlCalculateTrajectory', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 302)" style="font-weight:bold">main>ResolveMotionRateControlCalculateTrajectory</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',302,0)">line 302</a>)
+Transfrom = robot.model.fkine(qMatrix(end,:));
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 95)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',95,0)">line 95</a>)
+[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
+} 
+opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',302,0)
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.7870
+         0    1.0000         0    6.7850
+         0         0    1.0000         0
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    2.0740
+         0    1.0000         0   13.5700
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-04 *
+
+   -0.0000    0.0400    0.8017   -0.0327
+    0.0400   -0.0000    0.3545    0.1997
+    0.8017    0.3545   -0.0000    0.2077
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0327    0.1997    0.2077
+
+Rotation Error (degrees): 
+  -90.0062   66.1441  -90.0461
+
+End Point Translation Error: 
+   1.0e-03 *
+
+   -0.3164   -0.5068    0.3966
+
+End Point Maximum Translation Error: 
+   5.0675e-04
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
