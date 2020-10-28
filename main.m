@@ -55,8 +55,8 @@ plot3(Transform(1,4),Transform(2,4),Transform(3,4),'.','Color','b','MarkerSize',
 %% Choose a location for the drum based upon your personalised robot location
 
 drumPosition = baseLocation;
-drumPosition(1) = drumPosition(1)-0.5;
-drumPosition(3) = drumPosition(3)-1;
+drumPosition(1) = drumPosition(1)-0.75;
+drumPosition(3) = drumPosition(3)-1.5;
 
 drum = LoadObject("Drum.ply",drumPosition,0);
 
@@ -76,20 +76,33 @@ robotDrumTransform = robotBaseTransform * drumTransform
 
 % Window corner point from data tips = [1.983,6.84,0.591]
 
+drumOriginToCorner1=[0.3856,0.0550,0.5910];
+windowCorner1 = drumPosition+drumOriginToCorner1;
+
+drumOriginToCorner2=[0.1964,0.0550,0.5910];
+windowCorner2 = drumPosition+drumOriginToCorner2
+
 robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
 
-windowCorner = [0.8,6.84,0.591];
-startPose = windowCorner;
-startPose(3) = startPose(3) + 0.5;
+% windowCorner = [0.8,6.84,0.591];
+startPose = windowCorner1;
+startPose(3) = startPose(3)+0.3;
+% startPose(3) = startPose(3);
 robotPose = CalculateQ(robot,startPose);
 robot.animate(robotPose);
 
 robotStartTransform = robot.fkine(robot.getpos);
-startPoint = robotStartTransform(1:3,4)';
-endPoint = startPoint;
-endPoint(2) = endPoint(2) - 0.3;
+% startPoint = robotStartTransform(1:3,4)';
+endPoint = windowCorner2;
+endPoint(3) = endPoint(3)+0.3;
+% endPoint(2) = endPoint(2) - 0.3;
 velocity = 1;
-axis = [0,0,0]; % Move along x axis
+
+% Control allignment of end effector along trajectory
+rpy=tr2rpy(robot.fkine(robot.getpos));
+rpy(3)=rpy(3)+pi;
+axis = -rpy; % Move along x axis
+
 launching = false;
 
 [qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
@@ -176,31 +189,29 @@ function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(ro
 
 % Calculate distance to point to scale the number of steps for
 % each trajectory
-
-% robotTransform = robot.fkine(robot.getpos);
-% rpy = tr2rpy(robotTransform);
-% yaw=rpy(3);
-% robotTransform = robot.fkine(robot.getpos)*toolTransform;
-% 
+ 
 % % Transform = robotTransform*toolTransform;
 robotTransform = robot.fkine(robot.getpos);
 startPoint = robotTransform(1:3,4)';
-% % toolTransform = transl(-toolOffset);
-% endTransform = transl(endPoint)*toolTransform;
-% endPoint = endTransform(1:3,4)';
-
 distanceToEndPoint = norm(endPoint-startPoint);
 
 % Robotics
 % Lab 9 - Question 1 - Resolved Motion Rate Control in 6DOF
 % 1.1) Set parameters for the simulation
 % mdl_puma560;        % Load robot model
-t = (distanceToEndPoint)/velocity;             % Total time (s)
-deltaT = 0.005;      % Control frequency
-steps = round(t/deltaT,0,'decimals');   % No. of steps for simulation
+% t = (distanceToEndPoint)/velocity;             % Total time (s)
+% deltaT = 0.005;      % Control frequency
+% steps = round(t/deltaT,0,'decimals');   % No. of steps for simulation
+% delta = 2*pi/steps; % Small angle change
+% epsilon = 0.1;      % Threshold value for manipulability/Damped Least Squares
+% W = diag([1 1 1 0.1 0.1 0.1]);    % Weighting matrix for the velocity vector 1s for more weighting than 0.1 angular velocities
+
+t = 10;             % Total time (s)
+deltaT = 0.02;      % Control frequency
+steps = t/deltaT;   % No. of steps for simulation
 delta = 2*pi/steps; % Small angle change
 epsilon = 0.1;      % Threshold value for manipulability/Damped Least Squares
-W = diag([1 1 1 0.1 0.1 0.1]);    % Weighting matrix for the velocity vector 1s for more weighting than 0.1 angular velocities
+W = diag([1 1 1 0.1 0.1 0.1]);    % Weighting matrix for the velocity vector
 
 % 1.2) Allocate array data
 m = zeros(steps,1);             % Array for Measure of Manipulability
@@ -246,20 +257,6 @@ for i=1:steps
     theta(3,i) = axis(3);                                        % Yaw angle % pi/2 alligns z to trajectory
     
 end
-% for i=1:steps
-%     x(1,i) = x(1,i)-toolOffset(1); % Points in x
-%     x(2,i) = x(2,i)-toolOffset(2); % Points in y
-%     x(3,i) = x(3,i)-toolOffset(3);% Points in z    elseif launching == true
-%     
-%    
-% end
-
-%     test = 1;
-%     if velocity>3
-%         test = -1;
-%     end
-%
-
 
 q0 = zeros(1,6);                                                            % Initial guess for joint angles
 
