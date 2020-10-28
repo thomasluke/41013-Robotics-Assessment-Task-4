@@ -22,7 +22,7 @@ view(az,el);
 
 %% Place the robot base according to your student number.
 %  For an 8 digit student number: xxxxyyyy, the base must be [x.xxx,y.yyy,1]meters.
-%  So, for student number: 10052821,  p560.base = transl( [1.005, 2.821, 1]);
+%  So, for student number: 10052821,  robot.base = transl( [1.005, 2.821, 1]);
 
 mdl_puma560;
 robot = p560;
@@ -97,18 +97,22 @@ endPoint = windowCorner2;
 endPoint(3) = endPoint(3)+0.3;
 % endPoint(2) = endPoint(2) - 0.3;
 velocity = 1;
+
+% Control allignment of end effector along trajectory
 rpy=tr2rpy(robot.fkine(robot.getpos));
 rpy(3)=rpy(3)+pi;
 axis = -rpy; % Move along x axis
+
 launching = false;
 
-[qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
+% [qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
+[q,qd,qdd] = Lab9Solution_Question3(robot,endPoint,velocity,axis,launching);
 
-AnimateTrajectory(robot,qMatrix);
+AnimateTrajectory(robot,q);
 
 % Delete previous trajectory plot
-delete(trajectoryPlot);
-trajectoryPlot = [];
+% delete(trajectoryPlot);
+% trajectoryPlot = [];
 
 function AnimateTrajectory (robot,trajectory)
 
@@ -177,7 +181,7 @@ disp(rotationError);
 
 end
 
-function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching)
+function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,steps,launching)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Modified from 41013 Robotics week 9 material
@@ -205,7 +209,7 @@ distanceToEndPoint = norm(endPoint-startPoint);
 
 t = 10;             % Total time (s)
 deltaT = 0.02;      % Control frequency
-steps = t/deltaT;   % No. of steps for simulation
+% steps = t/deltaT;   % No. of steps for simulation
 delta = 2*pi/steps; % Small angle change
 epsilon = 0.1;      % Threshold value for manipulability/Damped Least Squares
 W = diag([1 1 1 0.1 0.1 0.1]);    % Weighting matrix for the velocity vector
@@ -356,5 +360,123 @@ updatedPoints = [objectPose * [objectVerts,ones(objectVertexCount,1)]']';
 % Now update the Vertices
 objectMesh_h.Vertices = updatedPoints(:,1:3);
 drawnow();
+
+end
+
+function [q,qd,qdd] = Lab9Solution_Question3(robot,endPoint,velocity,axis,launching)
+
+% close all
+% clear all
+% clc
+% 
+% mdl_puma560    
+qZero = zeros(1,6); % Initial joint angle guess for ikcon
+tau_max = [97.7 186.4 89.4 24.2 20.1 21.3]';                                % Maximum joint torque of the Puma560
+
+%%%%%%%%%% Variables to change %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+robotTransform = robot.fkine(robot.getpos);
+startPoint = robotTransform(1:3,4)';
+distanceToEndPoint = norm(endPoint-startPoint);
+
+time = distanceToEndPoint/velocity;
+
+
+
+% time = 0.2;                                                                  % Total time to execute the motion
+T1 = [[0 -1 0; 0 0 1; -1 0 0] [0;0.7;0];zeros(1,3) 1];                      % First pose
+q1 = robot.ikcon(T1,qZero);                                                     % Inverse kinematics for 1st pose
+T2 = [[0 0 1;0 -1 0; 1 0 0] [0.5;0;0.6];zeros(1,3) 1];                      % Second pose
+q2 = robot.ikcon(T2,qZero);                                                     % Inverse kinematics for 2nd pose
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dt = 1/100;                                                                 % Set control frequency at 100Hz
+steps = round(time/dt,'dec;                                                            % No. of steps along trajectory
+
+% s = lspb(0,1,steps);                                                      % Generate trapezoidal velocity profile
+% for i = 1:steps
+%     q(i,:) = (1-s(i))*q1 + s(i)*q2;
+% end
+% q = jtraj(q1,q2,steps);                                                     % Quintic polynomial profile
+[q,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,steps,launching);
+
+qd = zeros(steps,6);                                                        % Array of joint velocities
+qdd = nan(steps,6);                                                         % Array of joint accelerations
+tau = nan(steps,6);                                                         % Array of joint torques
+mass = 2.09;                                                                  % Payload mass (kg)
+robot.payload(mass,[0.1;0;0]);                                               % Set payload mass in Puma 560 model: offset 0.1m in x-direction
+
+% Execute equations from week 9 lectures on dynamics
+for i = 1:steps-1
+    
+    % Discrete time propagation
+    % q(t) = q(t-1) + dt*qd(t-1) + (dt^2)*qdd(t-1)
+    qdd(i,:) = (1/dt)^2 * (q(i+1,:) - q(i,:) - dt*qd(i,:));                 % Calculate joint acceleration to get to next set of joint angles
+    M = robot.inertia(q(i,:));                                               % Calculate inertia matrix at this pose
+    % Coriolis (C) is either a matrix*vector = vector or just a straight up vector
+    C = robot.coriolis(q(i,:),qd(i,:));                                      % Calculate coriolis matrix at this pose
+    g = robot.gravload(q(i,:));                                              % Calculate gravity vector at this pose
+    % tau = M*qdd + C*qd + g
+    tau(i,:) = (M*qdd(i,:)' + C*qd(i,:)' + g')';                            % Calculate the joint torque needed
+    for j = 1:6
+        if abs(tau(i,j)) > tau_max(j)                                       % Check if torque exceeds limits
+            tau(i,j) = sign(tau(i,j))*tau_max(j);                           % Cap joint torque if above limits
+        end
+    end
+    % tau = M*qdd + C*qd + g
+    % rearanging
+    % qdd = M^-1(tau - C*qd - g)
+    qdd(i,:) = (inv(M)*(tau(i,:)' - C*qd(i,:)' - g'))';                     % Re-calculate acceleration based on actual torque
+    q(i+1,:) = q(i,:) + dt*qd(i,:) + dt^2*qdd(i,:);                         % Update joint angles based on actual acceleration
+    qd(i+1,:) = qd(i,:) + dt*qdd(i,:);                                      % Update the velocity for the next pose
+end
+
+t = 0:dt:(steps-1)*dt;                                                      % Generate time vector
+
+% %% Visulalisation and plotting of results
+% 
+% % Plot joint angles
+% figure(1)
+% for j = 1:6
+%     subplot(3,2,j)
+%     plot(t,q(:,j)','k','LineWidth',1);
+%     refline(0,robot.qlim(j,1));
+%     refline(0,robot.qlim(j,2));
+%     ylabel('Angle (rad)');
+%     box off
+% end
+% 
+% % Plot joint velocities
+% figure(2)
+% for j = 1:6
+%     subplot(3,2,j)
+%     plot(t,qd(:,j)*30/pi,'k','LineWidth',1);
+%     refline(0,0);
+%     ylabel('Velocity (RPM)');
+%     box off
+% end
+% 
+% % Plot joint acceleration
+% figure(3)
+% for j = 1:6
+%     subplot(3,2,j)
+%     plot(t,qdd(:,j),'k','LineWidth',1);
+%     ylabel('rad/s/s');
+%     refline(0,0)
+%     box off
+% end
+% 
+% % Plot joint torques
+% figure(4)
+% for j = 1:6
+%     subplot(3,2,j)
+%     plot(t,tau(:,j),'k','LineWidth',1);
+%     refline(0,tau_max(j));
+%     refline(0,-tau_max(j));
+%     ylabel('Nm');
+%     box off
+% end
+% 
+% % figure(6)
+% % robot.plot(q,'fps',steps)
 
 end

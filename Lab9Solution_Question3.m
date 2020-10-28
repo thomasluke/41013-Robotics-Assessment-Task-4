@@ -8,7 +8,8 @@ clear all
 clc
 
 mdl_puma560    
-qZero = zeros(1,6);
+qZero = zeros(1,6); % Initial joint angle guess for ikcon
+tau_max = [97.7 186.4 89.4 24.2 20.1 21.3]';                                % Maximum joint torque of the Puma560
 
 %%%%%%%%%% Variables to change %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 time = 20;                                                                  % Total time to execute the motion
@@ -33,17 +34,26 @@ tau = nan(steps,6);                                                         % Ar
 mass = 21;                                                                  % Payload mass (kg)
 p560.payload(mass,[0.1;0;0]);                                               % Set payload mass in Puma 560 model: offset 0.1m in x-direction
 
+% Execute equations from week 9 lectures on dynamics
 for i = 1:steps-1
+    
+    % Discrete time propagation
+    % q(t) = q(t-1) + dt*qd(t-1) + (dt^2)*qdd(t-1)
     qdd(i,:) = (1/dt)^2 * (q(i+1,:) - q(i,:) - dt*qd(i,:));                 % Calculate joint acceleration to get to next set of joint angles
     M = p560.inertia(q(i,:));                                               % Calculate inertia matrix at this pose
+    % Coriolis (C) is either a matrix*vector = vector or just a straight up vector
     C = p560.coriolis(q(i,:),qd(i,:));                                      % Calculate coriolis matrix at this pose
     g = p560.gravload(q(i,:));                                              % Calculate gravity vector at this pose
+    % tau = M*qdd + C*qd + g
     tau(i,:) = (M*qdd(i,:)' + C*qd(i,:)' + g')';                            % Calculate the joint torque needed
     for j = 1:6
         if abs(tau(i,j)) > tau_max(j)                                       % Check if torque exceeds limits
             tau(i,j) = sign(tau(i,j))*tau_max(j);                           % Cap joint torque if above limits
         end
     end
+    % tau = M*qdd + C*qd + g
+    % rearanging
+    % qdd = M^-1(tau - C*qd - g)
     qdd(i,:) = (inv(M)*(tau(i,:)' - C*qd(i,:)' - g'))';                     % Re-calculate acceleration based on actual torque
     q(i+1,:) = q(i,:) + dt*qd(i,:) + dt^2*qdd(i,:);                         % Update joint angles based on actual acceleration
     qd(i+1,:) = qd(i,:) + dt*qdd(i,:);                                      % Update the velocity for the next pose
