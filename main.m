@@ -112,6 +112,7 @@ overload = true; % True only works if the path is long enough or timeStep is sma
 if overload == true
     timeStep = 0.01;
     allignmentTimeStep = TimeStepCalculator(robot);
+    velocity = 0.2; % set the velocity to make sure it is intially below the overload velocity
 else
     % Calaculate the time to animate the robot through 1 tejectory step.
     % Varies based on computer speed
