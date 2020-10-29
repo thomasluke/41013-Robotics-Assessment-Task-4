@@ -95,9 +95,9 @@ robotStartTransform = robot.fkine(robot.getpos);
 endPoint = windowCorner2;
 endPoint(3) = endPoint(3)+gritBlastHeight;
 % endPoint(1) = endPoint(1) - 0.2;
-overloadVelocity =0.7809; % Approx overload velocity (reduce time step for more accuracy)
+
 % velocity = 0.2;
-velocity = 0.05;
+velocity = 0.4; % Below overload velocity of "approx" 0.56236 m/s
 
 % Control allignment of end effector along trajectory
 rpy=tr2rpy(robot.fkine(robot.getpos));
@@ -107,9 +107,18 @@ rpy(1)=rpy(1)-pi/4 % Allgin end effector so that the blast stream is parallel to
 axis = -rpy; % Move along x axis
 
 launching = false;
-overload = false; % True only works if the path is long enough. Otherwise the number of steps can approach zero
+overload = true; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
 
-timeStep = TimeStepCalculator(robot);
+if overload == true
+    timeStep = 0.01;
+    allignmentTimeStep = TimeStepCalculator(robot);
+else
+    % Calaculate the time to animate the robot through 1 tejectory step.
+    % Varies based on computer speed
+    % Use the timeStep as the time step for RMRC, so that the animation velocities match the calculated values.
+    timeStep = TimeStepCalculator(robot);
+    allignmentTimeStep = timeStep;
+end
 
 % Slowly allgin end effector so that the blast stream is parallel to the gravity
 % vector before grit blasting
@@ -117,7 +126,8 @@ moveDistance = 0.005;
 startPose(1) = startPose(1)+moveDistance;
 allignmentVelocity = moveDistance/5;
 plotResults = false;
-[q,qd,qdd] = DynamicTorque(robot,startPose,allignmentVelocity,axis,timeStep,launching,overload,plotResults);
+allignmentOverload = false;
+[q,qd,qdd] = DynamicTorque(robot,startPose,allignmentVelocity,axis,allignmentTimeStep,launching,allignmentOverload,plotResults);
 
 gritBlast = false;
 AnimateTrajectory(robot,q,gritBlast,gritBlastHeight);
@@ -131,7 +141,7 @@ pause(1); % Give the computer/simulation time to catch up so that the animation 
 % Start timer
 tic;
 
-gritBlast = true;
+gritBlast = false;
 AnimateTrajectory(robot,q,gritBlast,gritBlastHeight);
 
 % Stop timer and return time passed since tic was called
@@ -410,11 +420,9 @@ while torqueLimit == false
     if overload == false
         torqueLimit = true;
     elseif overload == true
-        time= time -0.01;
+        time= time -timeStep;
         velocity = distanceToEndPoint/time;
     end
-    
-    
     
     % time = 0.2;                                                                  % Total time to execute the motion
     T1 = [[0 -1 0; 0 0 1; -1 0 0] [0;0.7;0];zeros(1,3) 1];                      % First pose
@@ -436,8 +444,10 @@ while torqueLimit == false
     qd = zeros(steps,6);                                                        % Array of joint velocities
     qdd = nan(steps,6);                                                         % Array of joint accelerations
     tau = nan(steps,6);                                                         % Array of joint torques
-    mass = 2.09;                                                                  % Payload mass (kg)
-    robot.payload(mass,[0.1;0;0]);                                               % Set payload mass in Puma 560 model: offset 0.1m in x-direction
+    %     mass = 2.09;                                                                  % Payload mass (kg)
+    mass = -19.2148;                                                                  % Payload mass (kg)
+    %     robot.payload(mass,[0.1;0;0]);                                               % Set payload mass in Puma 560 model: offset 0.1m in x-direction
+    robot.payload(mass,[0;0;0]);                                               % Set payload mass in Puma 560 model: offset 0.1m in x-direction
     
     % Execute equations from week 9 lectures on dynamics
     for i = 1:steps-1
@@ -470,6 +480,12 @@ while torqueLimit == false
     
 end
 %% Visulalisation and plotting of results
+
+if overload == true
+    
+    disp(['Overload velocity: ',num2str(velocity),' m/s']);
+    
+end
 
 if plotResults == true
     
