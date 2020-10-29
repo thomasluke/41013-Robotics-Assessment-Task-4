@@ -162,11 +162,19 @@ function AnimateTrajectory (robot,trajectory)
 for trajStep = 1:size(trajectory,1)
     Q = trajectory(trajStep,:);
     
-    % calculate end effector position using fkine
-    %     fkine = robot.fkine(robot.getpos());
-    %     endEffectorPosition = fkine(1:3,4);
     
-    %                 plot3(endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3),'k.','LineWidth',1);
+    
+     calculate end effector position using fkine
+    fkine = robot.fkine(robot.getpos());
+    endEffectorPosition = fkine(1:3,4);
+    blastStreamEnd = endEffectorPosition;
+    blastStreamEnd(3) = blastStreamEnd(3)-0.3;
+    
+    for i=0:-0.1:blastStreamEnd
+    blastStream(i) = 
+    end
+    
+    plot3(endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3),'k.','LineWidth',1);
     
     % Animate robot through a fraction of the total movement
     robot.animate(Q);

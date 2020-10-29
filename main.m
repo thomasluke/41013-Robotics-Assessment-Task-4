@@ -114,16 +114,21 @@ overload = false; % True only works if the path is long enough. Otherwise the nu
 
 timeStep = TimeStepCalculator(robot);
 startPose(1) = startPose(1)+0.005;
+
 [q,qd,qdd] = DynamicTorque(robot,startPose,0.001,axis,timeStep,launching,overload);
-AnimateTrajectory(robot,q);
+
+gritBlast = false;
+AnimateTrajectory(robot,q,gritBlast);
 
 % [qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
-[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+  [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
 
 pause(1); % Give the computer/simulation time to catch up so that the animation time is accurate
 
 tic;
-AnimateTrajectory(robot,q);
+gritBlast = true;
+AnimateTrajectory(robot,q,gritBlast);
+
 timePassed = toc;
 
 disp(['Time passed: ',num2str(timePassed),' seconds']);
@@ -157,22 +162,39 @@ timeStep = toc;
 
 end
 
-function AnimateTrajectory (robot,trajectory)
+function AnimateTrajectory (robot,trajectory,gritBlast)
+   
+blastStreamPlot = [];
+
 % Iterate the robot arms through their movement
 for trajStep = 1:size(trajectory,1)
+    
     Q = trajectory(trajStep,:);
     
-    % calculate end effector position using fkine
-    %     fkine = robot.fkine(robot.getpos());
-    %     endEffectorPosition = fkine(1:3,4);
+    if gritBlast == true
+    %   calculate end effector position using fkine
+    fkine = robot.fkine(robot.getpos());
+    endEffectorPosition = fkine(1:3,4);
     
-    %                 plot3(endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3),'k.','LineWidth',1);
+    for i=0.01:0.01:0.3
+        index = round(i * 100,0,'decimals');
+        blastStream(index,:) = [endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3)-i];
+    end
+    
+    blastStreamPlot = plot3(blastStream(:,1),blastStream(:,2),blastStream(:,3),'Color', [0.5, 0.5, 0.5], 'Marker', '.','LineWidth',1);
+    
+    end
     
     % Animate robot through a fraction of the total movement
     robot.animate(Q);
     
     drawnow();
+    
+    % Delete previous trajectory plot
+    delete(blastStreamPlot);
+    blastStreamPlot = [];
 end
+
 end
 
 function [endQ] = CalculateQ(robot,point)
