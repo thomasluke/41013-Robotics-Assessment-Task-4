@@ -62931,3 +62931,1053 @@ End Point Rotation Error (degrees):
 
 Fast RNE: (c) Peter Corke 2002-2012
 Time passed: 2.1467 seconds
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+End Point Translation Error: 
+    0.0118    0.0003    0.0065
+
+End Point Maximum Translation Error: 
+    0.0118
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+Time passed: 0.91329 seconds
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -1.5707    0.0000    0.0001
+
+End Point Translation Error: 
+    0.0214   -0.0020    0.0125
+
+End Point Maximum Translation Error: 
+    0.0214
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+Time passed: 1.7122 seconds
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   1.0e-03 *
+
+    0.1072    0.0113    0.0552
+
+End Point Translation Error: 
+    0.0107    0.0004    0.0064
+
+End Point Maximum Translation Error: 
+    0.0107
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+Time passed: 2.4188 seconds
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -1.5707    0.0000    0.0001
+
+End Point Translation Error: 
+    0.0093    0.0015   -0.0004
+
+End Point Maximum Translation Error: 
+    0.0093
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+Time passed: 5.0185 seconds
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -2.3561    0.0000    0.0001
+
+End Point Translation Error: 
+    0.0016   -0.0001    0.0009
+
+End Point Maximum Translation Error: 
+    0.0016
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+Time passed: 5.2718 seconds
+main
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('matlab.graphics.axis.Axes/set')" style="font-weight:bold">matlab.graphics.axis.Axes/set</a>
+Error setting property 'OuterPosition' of class '<a href="matlab:doc matlab.graphics.axis.Axes">Axes</a>':
+Width and height must be greater than or equal to 0
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('SerialLink/teach>resize_callback', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\teach.m', 459)" style="font-weight:bold">SerialLink/teach>resize_callback</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\teach.m',459,0)">line 459</a>)
+    set(handles.curax, 'Units', 'pixels', ...
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('SerialLink/teach>@(src,event)resize_callback(robot,handles)', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\teach.m', 146)" style="font-weight:bold">SerialLink/teach>@(src,event)resize_callback(robot,handles)</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\teach.m',146,0)">line 146</a>)
+    set(handles.fig, 'ResizeFcn', @(src,event) resize_callback(robot, handles));
+} 
+Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main>LoadObject', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 400)" style="font-weight:bold">main>LoadObject</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',400,0)">line 400</a>)
+Error while evaluating Figure SizeChangedFcn.
+
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.9269    0.0000    0.0001
+
+End Point Translation Error: 
+   -0.0004   -0.0003    0.0013
+
+End Point Maximum Translation Error: 
+    0.0013
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+Time passed: 2.5961 seconds
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('matlab.graphics.axis.Axes/set')" style="font-weight:bold">matlab.graphics.axis.Axes/set</a>
+Error setting property 'OuterPosition' of class '<a href="matlab:doc matlab.graphics.axis.Axes">Axes</a>':
+Width and height must be greater than or equal to 0
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('SerialLink/teach>resize_callback', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\teach.m', 459)" style="font-weight:bold">SerialLink/teach>resize_callback</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\teach.m',459,0)">line 459</a>)
+    set(handles.curax, 'Units', 'pixels', ...
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('SerialLink/teach>@(src,event)resize_callback(robot,handles)', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\teach.m', 146)" style="font-weight:bold">SerialLink/teach>@(src,event)resize_callback(robot,handles)</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\teach.m',146,0)">line 146</a>)
+    set(handles.fig, 'ResizeFcn', @(src,event) resize_callback(robot, handles));
+} 
+Error while evaluating Figure SizeChangedFcn.
+
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.9269    0.0000    0.0001
+
+End Point Translation Error: 
+   -0.0100    0.0030   -0.0004
+
+End Point Maximum Translation Error: 
+    0.0100
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',120,1)">120 </a>[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+if system_dependent('IsDebugMode')==1, dbquit all; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.9269    0.0000    0.0001
+
+End Point Translation Error: 
+   -0.0100    0.0030   -0.0004
+
+End Point Maximum Translation Error: 
+    0.0100
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',121,1)">121 </a>[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+if system_dependent('IsDebugMode')==1, dbquit all; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.9269    0.0000    0.0001
+
+End Point Translation Error: 
+   -0.0272   -0.0116    0.0012
+
+End Point Maximum Translation Error: 
+    0.0272
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',121,1)">121 </a>[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+if system_dependent('IsDebugMode')==1, dbquit all; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.9269    0.0000    0.0001
+
+End Point Translation Error: 
+   1.0e-04 *
+
+   -0.7254   -0.3534    0.0143
+
+End Point Maximum Translation Error: 
+   7.2539e-05
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',121,1)">121 </a>[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+if system_dependent('IsDebugMode')==1, dbquit all; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.9269    0.0000    0.0001
+
+End Point Translation Error: 
+   1.0e-06 *
+
+   -0.5805   -0.2860    0.0025
+
+End Point Maximum Translation Error: 
+   5.8052e-07
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('SerialLink/animate', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\animate.m', 147)" style="font-weight:bold">SerialLink/animate</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Peter Corke''s Robotics Toolbox for MATLAB\robot-9.10Small_Modified\rvctools\robot\@SerialLink\animate.m',147,0)">line 147</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main>AnimateTrajectory', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 172)" style="font-weight:bold">main>AnimateTrajectory</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',172,0)">line 172</a>)
+    robot.animate(Q);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m', 118)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',118,0)">line 118</a>)
+AnimateTrajectory(robot,q);
+} 
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('matlab.unittest.internal.ui.toolstrip.getFileInfoForToolstrip', 'D:\Program Files (x86)\MATLAB\R2020a\toolbox\matlab\testframework\ui\toolstrip\+matlab\+unittest\+internal\+ui\+toolstrip\getFileInfoForToolstrip.m', 27)" style="font-weight:bold">matlab.unittest.internal.ui.toolstrip.getFileInfoForToolstrip</a> (<a href="matlab: opentoline('D:\Program Files (x86)\MATLAB\R2020a\toolbox\matlab\testframework\ui\toolstrip\+matlab\+unittest\+internal\+ui\+toolstrip\getFileInfoForToolstrip.m',27,0)">line 27</a>)
+} 
+Exception in thread "AWT-EventQueue-0": com.mathworks.mvm.exec.MvmCancellationException
+	at com.mathworks.mvm.exec.FutureResult.getInternal(FutureResult.java:418)
+	at com.mathworks.mvm.exec.FutureFevalResult.getInternal(FutureFevalResult.java:49)
+	at com.mathworks.mvm.exec.FutureResult.get(FutureResult.java:263)
+	at com.mathworks.toolbox.matlab.testframework.ui.toolstrip.RunTestsToolSetMatlabCommandSender$2.done(RunTestsToolSetMatlabCommandSender.java:62)
+	at com.mathworks.mvm.exec.MvmSwingWorker$1$1.run(MvmSwingWorker.java:142)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.9269    0.0000    0.0001
+
+End Point Translation Error: 
+   -0.0070   -0.0019    0.0007
+
+End Point Maximum Translation Error: 
+    0.0070
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',121,1)">121 </a>[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+if system_dependent('IsDebugMode')==1, dbquit all; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.9269    0.0000    0.0001
+
+End Point Translation Error: 
+   -0.0024   -0.0010    0.0003
+
+End Point Maximum Translation Error: 
+    0.0024
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',121,1)">121 </a>[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+if system_dependent('IsDebugMode')==1, dbcont; end
+End Point Translation Error: 
+   1.0e-03 *
+
+    0.5274    0.1027    0.2688
+
+End Point Maximum Translation Error: 
+   5.2736e-04
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Time passed: 3.9631 seconds
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.1415   -0.7854    0.0001
+
+End Point Translation Error: 
+   -0.0019    0.0005   -0.0013
+
+End Point Maximum Translation Error: 
+    0.0019
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',121,1)">121 </a>[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+if system_dependent('IsDebugMode')==1, dbquit all; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.1415    0.7854    0.0001
+
+End Point Translation Error: 
+   -0.0168    0.0096   -0.0080
+
+End Point Maximum Translation Error: 
+    0.0168
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',121,1)">121 </a>[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+if system_dependent('IsDebugMode')==1, dbquit; end
+main
+Robot Base Transform
+
+robotBaseTransform =
+
+    1.0000         0         0    1.2870
+         0    1.0000         0    6.7850
+         0         0    1.0000    1.0000
+         0         0         0    1.0000
+
+Robot Drum Transform
+
+drumTransform =
+
+    1.0000         0         0    0.5370
+         0    1.0000         0    6.7850
+         0         0    1.0000   -0.5000
+         0         0         0    1.0000
+
+Transform Between Base and Drum
+
+robotDrumTransform =
+
+    1.0000         0         0    1.8240
+         0    1.0000         0   13.5700
+         0         0    1.0000    0.5000
+         0         0         0    1.0000
+
+Transformation Error: 
+   1.0e-03 *
+
+   -0.0000    0.0552    0.0113   -0.0070
+    0.0552   -0.0000    0.1072   -0.0481
+    0.0113    0.1072   -0.0000   -0.0091
+         0         0         0         0
+
+Translation Error: 
+   1.0e-04 *
+
+   -0.0696   -0.4811   -0.0913
+
+Rotation Error (degrees): 
+  -90.0031    6.0382  -90.0016
+
+
+rpy =
+
+   -3.9269    0.0000    0.0001
+
+End Point Translation Error: 
+   1.0e-03 *
+
+   -0.7496   -0.3343    0.0684
+
+End Point Maximum Translation Error: 
+   7.4960e-04
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Fast RNE: (c) Peter Corke 2002-2012
+<a href="matlab: opentoline('C:\Users\Tom Harrison\Desktop\Subject Folders\Google Sync\41013 Robotics\Assignment 4\41013-Robotics-Assessment-Task-4\main.m',121,1)">121 </a>[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+if system_dependent('IsDebugMode')==1, dbcont; end
+End Point Translation Error: 
+   1.0e-03 *
+
+    0.2575    0.0529    0.1020
+
+End Point Maximum Translation Error: 
+   2.5750e-04
+
+End Point Rotation Error (degrees): 
+     0     0     0
+
+Time passed: 6.1072 seconds

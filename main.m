@@ -98,11 +98,14 @@ endPoint = windowCorner2;
 endPoint(3) = endPoint(3)+0.3;
 % endPoint(1) = endPoint(1) - 0.2;
 overloadVelocity =0.7809; % Approx overload velocity (reduce time step for more accuracy) 
-velocity = 0.2;
+% velocity = 0.2;
+velocity = 0.05;
+
 
 % Control allignment of end effector along trajectory
 rpy=tr2rpy(robot.fkine(robot.getpos));
 rpy(3)=rpy(3)+pi;
+rpy(1)=rpy(1)-pi/4
 % rpy(1)=rpy(1)+pi/4;
 axis = -rpy; % Move along x axis
 
@@ -110,6 +113,9 @@ launching = false;
 overload = false; % True only works if the path is long enough. Otherwise the number of steps can approach zero
 
 timeStep = TimeStepCalculator(robot);
+startPose(1) = startPose(1)+0.005;
+[q,qd,qdd] = DynamicTorque(robot,startPose,0.001,axis,timeStep,launching,overload);
+AnimateTrajectory(robot,q);
 
 % [qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
 [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);

@@ -81,14 +81,14 @@ drumOriginToCorner1=[0.3856,0.0550,0.5910];
 windowCorner1 = drumPosition+drumOriginToCorner1;
 
 drumOriginToCorner2=[0.1964,0.0550,0.5910];
-windowCorner2 = drumPosition+drumOriginToCorner2
+windowCorner2 = drumPosition+drumOriginToCorner2;
 
 robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
 
 % windowCorner = [0.8,6.84,0.591];
 startPose = windowCorner1;
 startPose(3) = startPose(3)+0.3;
-startPose(1) = startPose(1)+0.15;
+% startPose(1) = startPose(1)+0.2;
 robotPose = CalculateQ(robot,startPose);
 robot.animate(robotPose);
 
@@ -96,29 +96,68 @@ robotStartTransform = robot.fkine(robot.getpos);
 % startPoint = robotStartTransform(1:3,4)';
 endPoint = windowCorner2;
 endPoint(3) = endPoint(3)+0.3;
-endPoint(1) = endPoint(1) - 0.15;
-velocity =0.1892+0.3;
+% endPoint(1) = endPoint(1) - 0.2;
+overloadVelocity =0.7809; % Approx overload velocity (reduce time step for more accuracy) 
+% velocity = 0.2;
+velocity = 0.05;
+
 
 % Control allignment of end effector along trajectory
 rpy=tr2rpy(robot.fkine(robot.getpos));
 rpy(3)=rpy(3)+pi;
+rpy(1)=rpy(1)-pi/4
+% rpy(1)=rpy(1)+pi/4;
 axis = -rpy; % Move along x axis
 
 launching = false;
-overload = false;
+overload = false; % True only works if the path is long enough. Otherwise the number of steps can approach zero
+
+timeStep = TimeStepCalculator(robot);
+startPose(1) = startPose(1)+0.005;
+[q,qd,qdd] = DynamicTorque(robot,startPose,0.001,axis,timeStep,launching,overload);
+AnimateTrajectory(robot,q);
 
 % [qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
-[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,launching,overload);
+  [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
 
-% tic
+pause(1); % Give the computer/simulation time to catch up so that the animation time is accurate
+
+tic;
 AnimateTrajectory(robot,q);
-% toc
+timePassed = toc;
+
+disp(['Time passed: ',num2str(timePassed),' seconds']);
+
 % Delete previous trajectory plot
 % delete(trajectoryPlot);
 % trajectoryPlot = [];
 
-function AnimateTrajectory (robot,trajectory)
+function [timeStep] = TimeStepCalculator (robot)
 
+trajectory = robot.getpos;
+
+tic;
+
+for trajStep = 1:size(trajectory,1)
+    Q = trajectory(trajStep,:);
+    
+    % calculate end effector position using fkine
+    %     fkine = robot.fkine(robot.getpos());
+    %     endEffectorPosition = fkine(1:3,4);
+    
+    %                 plot3(endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3),'k.','LineWidth',1);
+    
+    % Animate robot through a fraction of the total movement
+    robot.animate(Q);
+    
+    drawnow();
+end
+
+timeStep = toc;
+
+end
+
+function AnimateTrajectory (robot,trajectory)
 % Iterate the robot arms through their movement
 for trajStep = 1:size(trajectory,1)
     Q = trajectory(trajStep,:);
@@ -183,7 +222,7 @@ disp(rotationError);
 
 end
 
-function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,steps,launching)
+function [qMatrix,trajectoryPlot]=ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,steps,timeStep,launching)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Modified from 41013 Robotics week 9 material
@@ -210,10 +249,10 @@ distanceToEndPoint = norm(endPoint-startPoint);
 % W = diag([1 1 1 0.1 0.1 0.1]);    % Weighting matrix for the velocity vector 1s for more weighting than 0.1 angular velocities
 
 t = 10;             % Total time (s)
-deltaT = 0.127875;      % Control frequency
+deltaT = timeStep;      % Control frequency
 % steps = t/deltaT;   % No. of steps for simulation
 delta = 2*pi/steps; % Small angle change
-epsilon = 0.127875;      % Threshold value for manipulability/Damped Least Squares
+epsilon = 0.1;      % Threshold value for manipulability/Damped Least Squares
 W = diag([1 1 1 0.1 0.1 0.1]);    % Weighting matrix for the velocity vector
 
 % 1.2) Allocate array data
@@ -365,7 +404,7 @@ drawnow();
 
 end
 
-function [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,launching,overload)
+function [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload)
 
 % close all
 % clear all
@@ -388,7 +427,7 @@ while torqueLimit == false
     if overload == false
      torqueLimit = true; 
     elseif overload == true
-        time= time -0.0001;
+        time= time -0.01;
         velocity = distanceToEndPoint/time;
     end
     
@@ -401,7 +440,7 @@ while torqueLimit == false
     q2 = robot.ikcon(T2,qZero);                                                     % Inverse kinematics for 2nd pose
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    dt = 1/10;                                                                 % Set control frequency at 100Hz
+    dt = timeStep;                                                                 % Set control frequency at 100Hz
     steps = round(time/dt,0,'decimals');                                                            % No. of steps along trajectory
     
     % s = lspb(0,1,steps);                                                      % Generate trapezoidal velocity profile
@@ -409,7 +448,7 @@ while torqueLimit == false
     %     q(i,:) = (1-s(i))*q1 + s(i)*q2;
     % end
     % q = jtraj(q1,q2,steps);                                                     % Quintic polynomial profile
-    [q,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,steps,launching);
+    [q,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,steps,timeStep,launching);
     
     qd = zeros(steps,6);                                                        % Array of joint velocities
     qdd = nan(steps,6);                                                         % Array of joint accelerations
