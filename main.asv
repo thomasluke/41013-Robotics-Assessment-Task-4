@@ -47,11 +47,8 @@ toolOffset = [0,0,0.2]; % Tool offset in meters
 toolTransform = transl(toolOffset);
 robot.tool=toolTransform;
 
-robotTransform = robot.fkine(robot.getpos);
-Transform = robotTransform*toolTransform;
-
-plot3(Transform(1,4),Transform(2,4),Transform(3,4),'.','Color','b','MarkerSize',10);
-% Transform = robotTransform +;
+% robotTransform = robot.fkine(robot.getpos);
+% Transform = robotTransform*toolTransform;
 
 %% Choose a location for the drum based upon your personalised robot location
 
@@ -85,6 +82,8 @@ windowCorner2 = drumPosition+drumOriginToCorner2;
 
 robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
 
+gritBlastingHeight
+
 % windowCorner = [0.8,6.84,0.591];
 startPose = windowCorner1;
 startPose(3) = startPose(3)+0.3;
@@ -93,19 +92,17 @@ robotPose = CalculateQ(robot,startPose);
 robot.animate(robotPose);
 
 robotStartTransform = robot.fkine(robot.getpos);
-% startPoint = robotStartTransform(1:3,4)';
 endPoint = windowCorner2;
 endPoint(3) = endPoint(3)+0.3;
 % endPoint(1) = endPoint(1) - 0.2;
-overloadVelocity =0.7809; % Approx overload velocity (reduce time step for more accuracy) 
+overloadVelocity =0.7809; % Approx overload velocity (reduce time step for more accuracy)
 % velocity = 0.2;
 velocity = 0.05;
 
-
 % Control allignment of end effector along trajectory
 rpy=tr2rpy(robot.fkine(robot.getpos));
-rpy(3)=rpy(3)+pi;
-rpy(1)=rpy(1)-pi/4
+rpy(3)=rpy(3)+pi; % Allign end effector z axis
+rpy(1)=rpy(1)-pi/4 % Allgin end effector so that the blast stream is parallel to the gravity vector
 % rpy(1)=rpy(1)+pi/4;
 axis = -rpy; % Move along x axis
 
@@ -113,17 +110,29 @@ launching = false;
 overload = false; % True only works if the path is long enough. Otherwise the number of steps can approach zero
 
 timeStep = TimeStepCalculator(robot);
-startPose(1) = startPose(1)+0.005;
-[q,qd,qdd] = DynamicTorque(robot,startPose,0.001,axis,timeStep,launching,overload);
-AnimateTrajectory(robot,q);
 
-% [qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
-  [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+% Slowly allgin end effector so that the blast stream is parallel to the gravity
+% vector before grit blasting
+moveDistance = 0.005;
+startPose(1) = startPose(1)+moveDistance;
+allignmentVelocity = moveDistance/5;
+[q,qd,qdd] = DynamicTorque(robot,startPose,allignmentVelocity,axis,timeStep,launching,overload);
+
+gritBlast = false;
+AnimateTrajectory(robot,q,gritBlast);
+
+% Move robot along straight grit blasting trajectory
+[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
 
 pause(1); % Give the computer/simulation time to catch up so that the animation time is accurate
 
+% Start timer
 tic;
-AnimateTrajectory(robot,q);
+
+gritBlast = true;
+AnimateTrajectory(robot,q,gritBlast);
+
+% Stop timer and return time passed since tic was called
 timePassed = toc;
 
 disp(['Time passed: ',num2str(timePassed),' seconds']);
@@ -136,51 +145,56 @@ function [timeStep] = TimeStepCalculator (robot)
 
 trajectory = robot.getpos;
 
+% Start timer
 tic;
 
 for trajStep = 1:size(trajectory,1)
     Q = trajectory(trajStep,:);
     
-    % calculate end effector position using fkine
-    %     fkine = robot.fkine(robot.getpos());
-    %     endEffectorPosition = fkine(1:3,4);
-    
-    %                 plot3(endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3),'k.','LineWidth',1);
-    
     % Animate robot through a fraction of the total movement
     robot.animate(Q);
     
     drawnow();
 end
 
+% Stop timer and return time passed since tic was called
 timeStep = toc;
 
 end
 
-function AnimateTrajectory (robot,trajectory)
+function AnimateTrajectory (robot,trajectory,gritBlast,gritBlastHeight)
+
+blastStreamPlot = [];
+
 % Iterate the robot arms through their movement
 for trajStep = 1:size(trajectory,1)
+    
     Q = trajectory(trajStep,:);
     
-    
-    
-     calculate end effector position using fkine
-    fkine = robot.fkine(robot.getpos());
-    endEffectorPosition = fkine(1:3,4);
-    blastStreamEnd = endEffectorPosition;
-    blastStreamEnd(3) = blastStreamEnd(3)-0.3;
-    
-    for i=0:-0.1:blastStreamEnd
-    blastStream(i) = 
+    if gritBlast == true
+        %   calculate end effector position using fkine
+        fkine = robot.fkine(robot.getpos());
+        endEffectorPosition = fkine(1:3,4);
+        
+        for i=0.01:0.01:gritBlastHeight
+            index = round(i * 100,0,'decimals');
+            blastStream(index,:) = [endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3)-i];
+        end
+        
+        blastStreamPlot = plot3(blastStream(:,1),blastStream(:,2),blastStream(:,3),'Color', [0.5, 0.5, 0.5], 'Marker', '.','LineWidth',1);
+        
     end
-    
-    plot3(endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3),'k.','LineWidth',1);
     
     % Animate robot through a fraction of the total movement
     robot.animate(Q);
     
     drawnow();
+    
+    % Delete previous trajectory plot
+    delete(blastStreamPlot);
+    blastStreamPlot = [];
 end
+
 end
 
 function [endQ] = CalculateQ(robot,point)
@@ -433,7 +447,7 @@ time = distanceToEndPoint/velocity;
 while torqueLimit == false
     
     if overload == false
-     torqueLimit = true; 
+        torqueLimit = true;
     elseif overload == true
         time= time -0.01;
         velocity = distanceToEndPoint/time;

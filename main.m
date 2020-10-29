@@ -47,11 +47,8 @@ toolOffset = [0,0,0.2]; % Tool offset in meters
 toolTransform = transl(toolOffset);
 robot.tool=toolTransform;
 
-robotTransform = robot.fkine(robot.getpos);
-Transform = robotTransform*toolTransform;
-
-plot3(Transform(1,4),Transform(2,4),Transform(3,4),'.','Color','b','MarkerSize',10);
-% Transform = robotTransform +;
+% robotTransform = robot.fkine(robot.getpos);
+% Transform = robotTransform*toolTransform;
 
 %% Choose a location for the drum based upon your personalised robot location
 
@@ -85,27 +82,27 @@ windowCorner2 = drumPosition+drumOriginToCorner2;
 
 robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
 
+gritBlastHeight = 0.3;
+
 % windowCorner = [0.8,6.84,0.591];
 startPose = windowCorner1;
-startPose(3) = startPose(3)+0.3;
+startPose(3) = startPose(3)+gritBlastHeight;
 % startPose(1) = startPose(1)+0.2;
 robotPose = CalculateQ(robot,startPose);
 robot.animate(robotPose);
 
 robotStartTransform = robot.fkine(robot.getpos);
-% startPoint = robotStartTransform(1:3,4)';
 endPoint = windowCorner2;
-endPoint(3) = endPoint(3)+0.3;
+endPoint(3) = endPoint(3)+gritBlastHeight;
 % endPoint(1) = endPoint(1) - 0.2;
-overloadVelocity =0.7809; % Approx overload velocity (reduce time step for more accuracy) 
+overloadVelocity =0.7809; % Approx overload velocity (reduce time step for more accuracy)
 % velocity = 0.2;
 velocity = 0.05;
 
-
 % Control allignment of end effector along trajectory
 rpy=tr2rpy(robot.fkine(robot.getpos));
-rpy(3)=rpy(3)+pi;
-rpy(1)=rpy(1)-pi/4
+rpy(3)=rpy(3)+pi; % Allign end effector z axis
+rpy(1)=rpy(1)-pi/4 % Allgin end effector so that the blast stream is parallel to the gravity vector
 % rpy(1)=rpy(1)+pi/4;
 axis = -rpy; % Move along x axis
 
@@ -113,22 +110,31 @@ launching = false;
 overload = false; % True only works if the path is long enough. Otherwise the number of steps can approach zero
 
 timeStep = TimeStepCalculator(robot);
-startPose(1) = startPose(1)+0.005;
 
-[q,qd,qdd] = DynamicTorque(robot,startPose,0.001,axis,timeStep,launching,overload);
+% Slowly allgin end effector so that the blast stream is parallel to the gravity
+% vector before grit blasting
+moveDistance = 0.005;
+startPose(1) = startPose(1)+moveDistance;
+allignmentVelocity = moveDistance/5;
+plotResults = false;
+[q,qd,qdd] = DynamicTorque(robot,startPose,allignmentVelocity,axis,timeStep,launching,overload,plotResults);
 
 gritBlast = false;
-AnimateTrajectory(robot,q,gritBlast);
+AnimateTrajectory(robot,q,gritBlast,gritBlastHeight);
 
-% [qMatrix,trajectoryPlot] = ResolveMotionRateControlCalculateTrajectory(robot,endPoint,velocity,axis,launching);
-  [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload);
+% Move robot along straight grit blasting trajectory
+plotResults = true;
+[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload,plotResults);
 
 pause(1); % Give the computer/simulation time to catch up so that the animation time is accurate
 
+% Start timer
 tic;
-gritBlast = true;
-AnimateTrajectory(robot,q,gritBlast);
 
+gritBlast = true;
+AnimateTrajectory(robot,q,gritBlast,gritBlastHeight);
+
+% Stop timer and return time passed since tic was called
 timePassed = toc;
 
 disp(['Time passed: ',num2str(timePassed),' seconds']);
@@ -141,16 +147,11 @@ function [timeStep] = TimeStepCalculator (robot)
 
 trajectory = robot.getpos;
 
+% Start timer
 tic;
 
 for trajStep = 1:size(trajectory,1)
     Q = trajectory(trajStep,:);
-    
-    % calculate end effector position using fkine
-    %     fkine = robot.fkine(robot.getpos());
-    %     endEffectorPosition = fkine(1:3,4);
-    
-    %                 plot3(endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3),'k.','LineWidth',1);
     
     % Animate robot through a fraction of the total movement
     robot.animate(Q);
@@ -158,12 +159,13 @@ for trajStep = 1:size(trajectory,1)
     drawnow();
 end
 
+% Stop timer and return time passed since tic was called
 timeStep = toc;
 
 end
 
-function AnimateTrajectory (robot,trajectory,gritBlast)
-   
+function AnimateTrajectory (robot,trajectory,gritBlast,gritBlastHeight)
+
 blastStreamPlot = [];
 
 % Iterate the robot arms through their movement
@@ -171,18 +173,19 @@ for trajStep = 1:size(trajectory,1)
     
     Q = trajectory(trajStep,:);
     
+    % Turn on grit blaster (show grit blasting line indicator)
     if gritBlast == true
-    %   calculate end effector position using fkine
-    fkine = robot.fkine(robot.getpos());
-    endEffectorPosition = fkine(1:3,4);
-    
-    for i=0.01:0.01:0.3
-        index = round(i * 100,0,'decimals');
-        blastStream(index,:) = [endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3)-i];
-    end
-    
-    blastStreamPlot = plot3(blastStream(:,1),blastStream(:,2),blastStream(:,3),'Color', [0.5, 0.5, 0.5], 'Marker', '.','LineWidth',1);
-    
+        %   calculate end effector position using fkine
+        fkine = robot.fkine(robot.getpos());
+        endEffectorPosition = fkine(1:3,4);
+        
+        for i=0.01:0.01:gritBlastHeight
+            index = round(i * 100,0,'decimals');
+            blastStream(index,:) = [endEffectorPosition(1),endEffectorPosition(2),endEffectorPosition(3)-i];
+        end
+        
+        blastStreamPlot = plot3(blastStream(:,1),blastStream(:,2),blastStream(:,3),'Color', [0.5, 0.5, 0.5], 'Marker', '.','LineWidth',1);
+        
     end
     
     % Animate robot through a fraction of the total movement
@@ -198,19 +201,6 @@ end
 end
 
 function [endQ] = CalculateQ(robot,point)
-
-% % Calculating rotation of the end transform depending on object position
-% if sign(point(2)) ~= 0
-%     rotationTransformX = sign(point(1))*-trotx(pi/2);
-% else
-%     rotationTransformX = 1;
-% end
-%
-% if sign(point(1)) ~= 0
-%     rotationTransformY = sign(point(1))*troty(pi/2);
-% else
-%     rotationTransformY = 1;
-% end
 
 % End tranformation for the end effector
 endTransform = transl(point)*troty(pi);
@@ -259,17 +249,6 @@ robotTransform = robot.fkine(robot.getpos);
 startPoint = robotTransform(1:3,4)';
 distanceToEndPoint = norm(endPoint-startPoint);
 
-% Robotics
-% Lab 9 - Question 1 - Resolved Motion Rate Control in 6DOF
-% 1.1) Set parameters for the simulation
-% mdl_puma560;        % Load robot model
-% t = (distanceToEndPoint)/velocity;             % Total time (s)
-% deltaT = 0.005;      % Control frequency
-% steps = round(t/deltaT,0,'decimals');   % No. of steps for simulation
-% delta = 2*pi/steps; % Small angle change
-% epsilon = 0.1;      % Threshold value for manipulability/Damped Least Squares
-% W = diag([1 1 1 0.1 0.1 0.1]);    % Weighting matrix for the velocity vector 1s for more weighting than 0.1 angular velocities
-
 t = 10;             % Total time (s)
 deltaT = timeStep;      % Control frequency
 % steps = t/deltaT;   % No. of steps for simulation
@@ -286,23 +265,6 @@ x = zeros(3,steps);             % Array for x-y-z trajectory
 positionError = zeros(3,steps); % For plotting trajectory error
 angleError = zeros(3,steps);    % For plotting trajectory error
 
-% % Modify the rotation of the end effector based on the object position
-% if endPoint(1)>0.01
-%     objectTransform = troty(-pi/2);
-% elseif endPoint(1) <0.01
-%     objectTransform = troty(pi/2);
-% else
-%     objectTransform = eye(4);
-% end
-%
-% if endPoint(2)>0.01
-%     objectTransform = objectTransform*trotx(-pi/2);
-% elseif endPoint(2) <0.01
-%     objectTransform = objectTransform*trotx(pi/2);
-% end
-%
-% rpy = tr2rpy(objectTransform);
-
 % 1.3) Set up trajectory, initial pose
 s = lspb(0,1,steps);                % Trapezoidal trajectory scalar
 for i=1:steps
@@ -313,9 +275,8 @@ for i=1:steps
     elseif launching == false
         x(3,i) = (1-s(i))*startPoint(3) + s(i)*endPoint(3); % Points in z
         %     x(3,i) = endPoint(3) + 0.2*sin(i*delta); % Points in z
-        
-        
     end
+    
     theta(1,i) = axis(2);                                        % Roll angle % pi/2 alligns y to trajectory
     theta(2,i) = axis(1);                                        % Pitch angle   % pi/2 alligns x to trajectory
     theta(3,i) = axis(3);                                        % Yaw angle % pi/2 alligns z to trajectory
@@ -382,7 +343,7 @@ end
 function [objectMesh_h] = LoadObject(objectName, position, orientation)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Modified from 41013 Robotics week 4 material material
+% Modified from 41013 Robotics week 4 material
 % "PuttingSimulatedObjectsIntoTheEnvironment.m"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -426,14 +387,14 @@ drawnow();
 
 end
 
-function [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload)
+function [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload,plotResults)
 
-% close all
-% clear all
-% clc
-%
-% mdl_puma560
-qZero = zeros(1,6); % Initial joint angle guess for ikcon
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Modified from 41013 Robotics week 10 material
+% "Lab9Solution_Question3.m "
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+qZero = zeros(1,6);                                                         % Initial joint angle guess for ikcon
 tau_max = [97.7 186.4 89.4 24.2 20.1 21.3]';                                % Maximum joint torque of the Puma560
 
 %%%%%%%%%% Variables to change %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -447,7 +408,7 @@ time = distanceToEndPoint/velocity;
 while torqueLimit == false
     
     if overload == false
-     torqueLimit = true; 
+        torqueLimit = true;
     elseif overload == true
         time= time -0.01;
         velocity = distanceToEndPoint/time;
@@ -510,49 +471,52 @@ while torqueLimit == false
 end
 %% Visulalisation and plotting of results
 
-% Plot joint angles
-figure('Name','Joint Angles','NumberTitle','off')
-for j = 1:6
-    subplot(3,2,j)
-    plot(t,q(:,j)','k','LineWidth',1);
-    refline(0,robot.qlim(j,1));
-    refline(0,robot.qlim(j,2));
-    ylabel('Angle (rad)');
-    box off
+if plotResults == true
+    
+    % Plot joint angles
+    figure('Name','Joint Angles','NumberTitle','off')
+    for j = 1:6
+        subplot(3,2,j)
+        plot(t,q(:,j)','k','LineWidth',1);
+        refline(0,robot.qlim(j,1));
+        refline(0,robot.qlim(j,2));
+        ylabel('Angle (rad)');
+        box off
+    end
+    
+    % Plot joint velocities
+    figure('Name','Joint Velocities','NumberTitle','off')
+    for j = 1:6
+        subplot(3,2,j)
+        plot(t,qd(:,j)*30/pi,'k','LineWidth',1);
+        refline(0,0);
+        ylabel('Velocity (RPM)');
+        box off
+    end
+    
+    % Plot joint acceleration
+    figure('Name','Joint Accelerations','NumberTitle','off')
+    for j = 1:6
+        subplot(3,2,j)
+        plot(t,qdd(:,j),'k','LineWidth',1);
+        ylabel('rad/s/s');
+        refline(0,0)
+        box off
+    end
+    
+    % Plot joint torques
+    figure('Name','Joint Torques','NumberTitle','off')
+    for j = 1:6
+        subplot(3,2,j)
+        plot(t,tau(:,j),'k','LineWidth',1);
+        refline(0,tau_max(j));
+        refline(0,-tau_max(j));
+        ylabel('Nm');
+        box off
+    end
+    
+    % figure(6)
+    % robot.plot(q,'fps',steps)
+    
 end
-
-% Plot joint velocities
-figure('Name','Joint Velocities','NumberTitle','off')
-for j = 1:6
-    subplot(3,2,j)
-    plot(t,qd(:,j)*30/pi,'k','LineWidth',1);
-    refline(0,0);
-    ylabel('Velocity (RPM)');
-    box off
-end
-
-% Plot joint acceleration
-figure('Name','Joint Accelerations','NumberTitle','off')
-for j = 1:6
-    subplot(3,2,j)
-    plot(t,qdd(:,j),'k','LineWidth',1);
-    ylabel('rad/s/s');
-    refline(0,0)
-    box off
-end
-
-% Plot joint torques
-figure('Name','Joint Torques','NumberTitle','off')
-for j = 1:6
-    subplot(3,2,j)
-    plot(t,tau(:,j),'k','LineWidth',1);
-    refline(0,tau_max(j));
-    refline(0,-tau_max(j));
-    ylabel('Nm');
-    box off
-end
-
-% figure(6)
-% robot.plot(q,'fps',steps)
-
 end
