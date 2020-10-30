@@ -97,7 +97,7 @@ endPoint(3) = endPoint(3)+gritBlastHeight;
 % endPoint(1) = endPoint(1) - 0.2;
 
 % velocity = 0.2;
-velocity = 0.4; % Below overload velocity of "approx" 0.56236 m/s
+velocity = 0.4; % Below overload velocity of "approx" 0.6 m/s
 
 % Control allignment of end effector along trajectory
 rpy=tr2rpy(robot.fkine(robot.getpos));
@@ -107,10 +107,10 @@ rpy(1)=rpy(1)-pi/4 % Allgin end effector so that the blast stream is parallel to
 axis = -rpy; % Move along x axis
 
 launching = false;
-overload = true; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
+overload = false; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
 
 if overload == true
-    timeStep = 0.01;
+    timeStep = 0.03;
     allignmentTimeStep = TimeStepCalculator(robot);
     velocity = 0.2; % set the velocity to make sure it is intially below the overload velocity
 else
