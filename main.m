@@ -30,7 +30,7 @@ robot = p560;
 
 % Student number = 12876785
 baseLocation = [1.287,6.785,1];
-robot.base = robot.base * transl(baseLocation);
+robot.base = transl(baseLocation);
 
 axis([-2+baseLocation(1) 2+baseLocation(1) -2+baseLocation(2) 2+baseLocation(2) -1.5 2.5]);
 robot.teach();
@@ -42,7 +42,6 @@ robot.animate(startQ);
 
 blastStreamAngle = deg2rad(45);
 toolOffset = [0,0,(200*tan(blastStreamAngle))/1000]; % Tool offset in meters
-toolOffset = [0,0,0.2]; % Tool offset in meters
 
 toolTransform = transl(toolOffset);
 robot.tool=toolTransform;
@@ -63,7 +62,7 @@ drum = LoadObject("Drum.ply",drumPosition,0);
 disp("Robot Base Transform");
 robotBaseTransform = robot.base
 
-disp("Robot Drum Transform");
+disp("Drum Transform");
 drumTransform = transl(drumPosition)
 
 disp("Transform Between Base and Drum");
@@ -97,7 +96,7 @@ endPoint(3) = endPoint(3)+gritBlastHeight;
 % endPoint(1) = endPoint(1) - 0.2;
 
 % velocity = 0.2;
-velocity = 0.4; % Below overload velocity of "approx" 0.6 m/s
+velocity = 0.1; % Below overload velocity of "approx" 0.6 m/s
 
 % Control allignment of end effector along trajectory
 rpy=tr2rpy(robot.fkine(robot.getpos));
@@ -407,19 +406,28 @@ function [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launch
 
 qZero = zeros(1,6);                                                         % Initial joint angle guess for ikcon
 tau_max = [97.7 186.4 89.4 24.2 20.1 21.3]';                                % Maximum joint torque of the Puma560
+qd_max = [8 10 10 5 5 5];
+qdd_max = [10 12 12 8 8 8];
 
 %%%%%%%%%% Variables to change %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 robotTransform = robot.fkine(robot.getpos);
 startPoint = robotTransform(1:3,4)';
 distanceToEndPoint = norm(endPoint-startPoint);
 
+% overloadPoint = zeros(1,2);
+
 torqueLimit = false;
+velocityLimit = false;
+accelerationLimit = false;
+breakOut = false;
 time = distanceToEndPoint/velocity;
 
-while torqueLimit == false
+while torqueLimit == false && velocityLimit == false && accelerationLimit == false && breakOut == false
+    
+    overloadPoint = zeros(1,2);
     
     if overload == false
-        torqueLimit = true;
+        breakOut = true;
     elseif overload == true
         time= time -timeStep;
         velocity = distanceToEndPoint/time;
@@ -463,28 +471,66 @@ while torqueLimit == false
         % tau = M*qdd + C*qd + g
         tau(i,:) = (M*qdd(i,:)' + C*qd(i,:)' + g')';                            % Calculate the joint torque needed
         for j = 1:6
-            if abs(tau(i,j)) > tau_max(j)                                       % Check if torque exceeds limits
-                tau(i,j) = sign(tau(i,j))*tau_max(j);                           % Cap joint torque if above limits
+            if abs(tau(i,j)) > tau_max(j)                                     % Check if torque exceeds limits
+                %                 tau(i,j) = sign(tau(i,j))*tau_max(j);                           % Cap joint torque if above limits
+                if torqueLimit == false
+                    overloadPoint = [i,j];
+                end
                 torqueLimit = true;
             end
         end
+        for j = 1:6
+            if abs(qd(i,j)) > qd_max(j)                                       % Check if velocity exceeds limits
+                %                 qd(i,j) = sign(qd(i,j))*qd_max(j);                           % Cap velocity if above limits
+                if velocityLimit == false
+                    overloadPoint = [i,j];
+                end
+                velocityLimit = true;
+                
+            end
+        end
+        for j = 1:6
+            if abs(qdd(i,j)) > qdd_max(j)                                       % Check if acceleration exceeds limits
+                %                 qdd(i,j) = sign(qdd(i,j))*qdd_max(j);                           % Cap acceleration if above limits
+                if accelerationLimit == false
+                    overloadPoint = [i,j];
+                end
+                accelerationLimit = true;
+                
+            end
+        end
+        
         % tau = M*qdd + C*qd + g
         % rearanging
         % qdd = M^-1(tau - C*qd - g)
-        qdd(i,:) = (inv(M)*(tau(i,:)' - C*qd(i,:)' - g'))';                     % Re-calculate acceleration based on actual torque
-        q(i+1,:) = q(i,:) + dt*qd(i,:) + dt^2*qdd(i,:);                         % Update joint angles based on actual acceleration
-        qd(i+1,:) = qd(i,:) + dt*qdd(i,:);                                      % Update the velocity for the next pose
+        
+        % Make sure these calculation are below the above for loops.
+        % So that they can recaculate after any values are normalised
+        if accelerationLimit == false
+            qdd(i,:) = (inv(M)*(tau(i,:)' - C*qd(i,:)' - g'))';                     % Re-calculate acceleration based on actual torque
+        end
+        if torqueLimit == false
+            q(i+1,:) = q(i,:) + dt*qd(i,:) + dt^2*qdd(i,:);                         % Update joint angles based on actual acceleration
+        end
+        if velocityLimit == false
+            qd(i+1,:) = qd(i,:) + dt*qdd(i,:);                                      % Update the velocity for the next pose
+            %
+        end
+        
+        
     end
     
+    %     qd = (qd*2*pi)/(60);
     t = 0:dt:(steps-1)*dt;                                                      % Generate time vector
     
     
 end
 %% Visulalisation and plotting of results
 
-if overload == true
+if overload == true || accelerationLimit == true || velocityLimit == true || torqueLimit == true
     
     disp(['Overload velocity: ',num2str(velocity),' m/s']);
+    disp('ROBOT OVERLOADED: INSTRUCTION NOT POSSIBLE. REDUCE MOVEMENT VELOCITY');
     
 end
 
@@ -497,7 +543,8 @@ if plotResults == true
         plot(t,q(:,j)','k','LineWidth',1);
         refline(0,robot.qlim(j,1));
         refline(0,robot.qlim(j,2));
-        ylabel('Angle (rad)');
+        ylabel('Joint Angle (rad)');
+        xlabel('time (s)');
         box off
     end
     
@@ -505,19 +552,35 @@ if plotResults == true
     figure('Name','Joint Velocities','NumberTitle','off')
     for j = 1:6
         subplot(3,2,j)
-        plot(t,qd(:,j)*30/pi,'k','LineWidth',1);
+        plot(t,qd(:,j),'k','LineWidth',1);
+        refline(0,qd_max(j));
+        refline(0,-qd_max(j));
         refline(0,0);
-        ylabel('Velocity (RPM)');
+        ylabel('Velocity (rad/s)');
+        xlabel('time (s)');
+        if velocityLimit==true && j == overloadPoint(2)
+            hold on
+            plot(t(overloadPoint(1)),qdd(overloadPoint(1),overloadPoint(2)),'r.','MarkerSize',20);
+            hold off
+        end
         box off
+        
     end
-    
     % Plot joint acceleration
     figure('Name','Joint Accelerations','NumberTitle','off')
     for j = 1:6
         subplot(3,2,j)
         plot(t,qdd(:,j),'k','LineWidth',1);
-        ylabel('rad/s/s');
-        refline(0,0)
+        refline(0,qdd_max(j));
+        refline(0,-qdd_max(j));
+        ylabel('Acceleration (rad/s/s)');
+        xlabel('time (s)');
+        refline(0,0);
+        if accelerationLimit==true && j == overloadPoint(2)
+            hold on
+            plot(t(overloadPoint(1)),qdd(overloadPoint(1),overloadPoint(2)),'r.','MarkerSize',20);
+            hold off
+        end
         box off
     end
     
@@ -528,7 +591,13 @@ if plotResults == true
         plot(t,tau(:,j),'k','LineWidth',1);
         refline(0,tau_max(j));
         refline(0,-tau_max(j));
-        ylabel('Nm');
+        ylabel('Joint Torque (Nm)');
+        xlabel('time (s)');
+        if torqueLimit==true && j == overloadPoint(2)
+            hold on
+            plot(t(overloadPoint(1)),qdd(overloadPoint(1),overloadPoint(2)),'r.','MarkerSize',20);
+            hold off
+        end
         box off
     end
     
