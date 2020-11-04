@@ -96,7 +96,7 @@ endPoint(3) = endPoint(3)+gritBlastHeight;
 % endPoint(1) = endPoint(1) - 0.2;
 
 % velocity = 0.2;
-velocity = 0.04; % Below overload velocity of "approx" 0.6 m/s
+velocity = 0.1; % Below overload velocity of "approx" 0.6 m/s
 
 % Control allignment of end effector along trajectory
 rpy=tr2rpy(robot.fkine(robot.getpos));
@@ -106,18 +106,19 @@ rpy(1)=rpy(1)-pi/4 % Allgin end effector so that the blast stream is parallel to
 axis = -rpy; % Move along x axis
 
 launching = false;
-overload = true; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
+overload = false; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
 
 if overload == true
     timeStep = 0.03;
     allignmentTimeStep = TimeStepCalculator(robot);
-    velocity = 0.05; % set the velocity to make sure it is intially below the overload velocity
+    velocity = 0.2; % set the velocity to make sure it is intially below the overload velocity
 else
     % Calaculate the time to animate the robot through 1 tejectory step.
     % Varies based on computer speed
     % Use the timeStep as the time step for RMRC, so that the animation velocities match the calculated values.
-    timeStep = TimeStepCalculator(robot);
+    animationTime = TimeStepCalculator(robot);
     allignmentTimeStep = timeStep;
+    animationStep = animationTime/allignment
 end
 
 % Slowly allgin end effector so that the blast stream is parallel to the gravity
@@ -414,17 +415,20 @@ robotTransform = robot.fkine(robot.getpos);
 startPoint = robotTransform(1:3,4)';
 distanceToEndPoint = norm(endPoint-startPoint);
 
-                overloadPoint = [];
+% overloadPoint = zeros(1,2);
 
 torqueLimit = false;
 velocityLimit = false;
 accelerationLimit = false;
+breakOut = false;
 time = distanceToEndPoint/velocity;
 
-while torqueLimit == false && velocityLimit == false && accelerationLimit == false
+while torqueLimit == false && velocityLimit == false && accelerationLimit == false && breakOut == false
+    
+    overloadPoint = zeros(1,2);
     
     if overload == false
-        torqueLimit = true;
+        breakOut = true;
     elseif overload == true
         time= time -timeStep;
         velocity = distanceToEndPoint/time;
@@ -469,31 +473,31 @@ while torqueLimit == false && velocityLimit == false && accelerationLimit == fal
         tau(i,:) = (M*qdd(i,:)' + C*qd(i,:)' + g')';                            % Calculate the joint torque needed
         for j = 1:6
             if abs(tau(i,j)) > tau_max(j)                                     % Check if torque exceeds limits
-                tau(i,j) = sign(tau(i,j))*tau_max(j);                           % Cap joint torque if above limits
+                %                 tau(i,j) = sign(tau(i,j))*tau_max(j);                           % Cap joint torque if above limits
                 if torqueLimit == false
-                overloadPoint = [i,j];
+                    overloadPoint = [i,j];
                 end
-              torqueLimit = true;
+                torqueLimit = true;
             end
         end
         for j = 1:6
-            if abs(qd(i,j)) > qd_max(j)                                       % Check if torque exceeds limits
-                qd(i,j) = sign(qd(i,j))*qd_max(j);                           % Cap joint torque if above limits
+            if abs(qd(i,j)) > qd_max(j)                                       % Check if velocity exceeds limits
+                %                 qd(i,j) = sign(qd(i,j))*qd_max(j);                           % Cap velocity if above limits
                 if velocityLimit == false
-                overloadPoint = [i,j];
+                    overloadPoint = [i,j];
                 end
-                                velocityLimit = true;
-
+                velocityLimit = true;
+                
             end
         end
         for j = 1:6
-            if abs(qdd(i,j)) > qdd_max(j)                                       % Check if torque exceeds limits
-                qdd(i,j) = sign(qdd(i,j))*qdd_max(j);                           % Cap joint torque if above limits
+            if abs(qdd(i,j)) > qdd_max(j)                                       % Check if acceleration exceeds limits
+                %                 qdd(i,j) = sign(qdd(i,j))*qdd_max(j);                           % Cap acceleration if above limits
                 if accelerationLimit == false
-                overloadPoint = [i,j];
+                    overloadPoint = [i,j];
                 end
-                                accelerationLimit = true;
-
+                accelerationLimit = true;
+                
             end
         end
         
@@ -501,31 +505,33 @@ while torqueLimit == false && velocityLimit == false && accelerationLimit == fal
         % rearanging
         % qdd = M^-1(tau - C*qd - g)
         
-        % Make sure these calculation are below the above for loops. So
-        % that they can recaculate after any values are normalise
+        % Make sure these calculation are below the above for loops.
+        % So that they can recaculate after any values are normalised
         if accelerationLimit == false
-        qdd(i,:) = (inv(M)*(tau(i,:)' - C*qd(i,:)' - g'))';                     % Re-calculate acceleration based on actual torque
+            qdd(i,:) = (inv(M)*(tau(i,:)' - C*qd(i,:)' - g'))';                     % Re-calculate acceleration based on actual torque
         end
         if torqueLimit == false
-        q(i+1,:) = q(i,:) + dt*qd(i,:) + dt^2*qdd(i,:);                         % Update joint angles based on actual acceleration
+            q(i+1,:) = q(i,:) + dt*qd(i,:) + dt^2*qdd(i,:);                         % Update joint angles based on actual acceleration
         end
         if velocityLimit == false
-        qd(i+1,:) = qd(i,:) + dt*qdd(i,:);                                      % Update the velocity for the next pose
-        qd = (qd*2*pi)/(60);
+            qd(i+1,:) = qd(i,:) + dt*qdd(i,:);                                      % Update the velocity for the next pose
+            %
         end
         
         
     end
     
+    %     qd = (qd*2*pi)/(60);
     t = 0:dt:(steps-1)*dt;                                                      % Generate time vector
     
     
 end
 %% Visulalisation and plotting of results
 
-if overload == true
+if overload == true || accelerationLimit == true || velocityLimit == true || torqueLimit == true
     
     disp(['Overload velocity: ',num2str(velocity),' m/s']);
+    disp('ROBOT OVERLOADED: INSTRUCTION NOT POSSIBLE. REDUCE MOVEMENT VELOCITY');
     
 end
 
@@ -554,14 +560,14 @@ if plotResults == true
         ylabel('Velocity (rad/s)');
         xlabel('time (s)');
         if velocityLimit==true && j == overloadPoint(2)
-        hold on
-        plot(t(overloadPoint(1)),qdd(overloadPoint(1),overloadPoint(2)),'r.','MarkerSize',10);
-        hold off
+            hold on
+            plot(t(overloadPoint(1)),qdd(overloadPoint(1),overloadPoint(2)),'r.','MarkerSize',20);
+            hold off
         end
-     box off
-
-    end    
-        % Plot joint acceleration
+        box off
+        
+    end
+    % Plot joint acceleration
     figure('Name','Joint Accelerations','NumberTitle','off')
     for j = 1:6
         subplot(3,2,j)
@@ -572,9 +578,9 @@ if plotResults == true
         xlabel('time (s)');
         refline(0,0);
         if accelerationLimit==true && j == overloadPoint(2)
-        hold on
-        plot(t(overloadPoint(1)),qdd(overloadPoint(1),overloadPoint(2)),'r.','MarkerSize',10);
-        hold off
+            hold on
+            plot(t(overloadPoint(1)),qdd(overloadPoint(1),overloadPoint(2)),'r.','MarkerSize',20);
+            hold off
         end
         box off
     end
@@ -589,9 +595,9 @@ if plotResults == true
         ylabel('Joint Torque (Nm)');
         xlabel('time (s)');
         if torqueLimit==true && j == overloadPoint(2)
-        hold on
-        plot(t(overloadPoint(1)),qdd(overloadPoint(1),overloadPoint(2)),'r.','MarkerSize',10);
-        hold off
+            hold on
+            plot(t(overloadPoint(1)),qdd(overloadPoint(1),overloadPoint(2)),'r.','MarkerSize',20);
+            hold off
         end
         box off
     end
