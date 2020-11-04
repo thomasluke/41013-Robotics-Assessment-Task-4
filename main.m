@@ -124,14 +124,14 @@ allignmentVelocity = abs(moveDistance/30);
 allignmentTimeStep=0.3;
 plotResults = false;
 allignmentOverload = false;
-[q,qd,qdd] = DynamicTorque(robot,startPose,allignmentVelocity,axis,allignmentTimeStep,launching,allignmentOverload,plotResults);
+[q,qd,qdd,allignmentVelocity] = DynamicTorque(robot,startPose,allignmentVelocity,axis,allignmentTimeStep,launching,allignmentOverload,plotResults);
 
 gritBlast = false;
 AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
 
 % Move robot along straight grit blasting trajectory
 plotResults = true;
-[q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload,plotResults);
+[q,qd,qdd,velocity] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload,plotResults);
 
 % figure(1); % Switch back to figure 1 tab
 
@@ -149,7 +149,7 @@ approxAnimationVelocityError = norm(endPoint-startPose)/timePassed;
 
 disp(['Time passed: ',num2str(timePassed),' seconds']);
 disp(['Approximated animation velocity: ',num2str(approxAnimationVelocityError),' m/s']);
-disp(['Approximated animation velocity error vs set velocity: ',num2str(approxAnimationVelocityError-velocity),' m/s']);
+disp(['Approximated animation velocity error vs programmed velocity: ',num2str(approxAnimationVelocityError-velocity),' m/s']);
 
 % Delete previous trajectory plot
 % delete(trajectoryPlot);
@@ -400,7 +400,7 @@ drawnow();
 
 end
 
-function [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload,plotResults)
+function [q,qd,qdd,velocity] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload,plotResults)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Modified from 41013 Robotics week 10 material
