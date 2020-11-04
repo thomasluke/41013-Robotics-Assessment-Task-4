@@ -102,29 +102,29 @@ velocity = 0.1; % Below overload velocity of "approx" 0.6 m/s
 rpy=tr2rpy(robot.fkine(robot.getpos));
 rpy(3)=rpy(3)+pi; % Allign end effector z axis
 rpy(1)=rpy(1)-pi/4 % Allgin end effector so that the blast stream is parallel to the gravity vector
-% rpy(1)=rpy(1)+pi/4;
 axis = -rpy; % Move along x axis
 
 launching = false;
 overload = false; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
 
-    velocity = 0.1; % set the velocity to make sure it is intially below the overload velocity
-    
-    % Calaculate the time to animate the robot through 1 tejectory step.
-    % Varies based on computer speed
-    % Use the timeStep as the time step for RMRC, so that the animation velocities match the calculated values.
-    animationTime = TimeStepCalculator(robot);
-    timeStep = 0.03;
-    animationStep = round(animationTime/timeStep,0,'decimals');
+velocity = 0.1; % set the velocity to make sure it is intially below the overload velocity
+
+% Calaculate the time to animate the robot through 1 tejectory step.
+% Varies based on computer speed
+% So Use the timeStep as the time step for RMRC, so that the animation velocities match the calculated values.
+animationTime = TimeStepCalculator(robot);
+timeStep = 0.03;
+animationStep = round(animationTime/timeStep,0,'decimals');
 
 % Slowly allgin end effector so that the blast stream is parallel to the gravity
 % vector before grit blasting
-moveDistance = 0.005;
+moveDistance = -0.005;
 startPose(1) = startPose(1)+moveDistance;
-allignmentVelocity = moveDistance/5;
+allignmentVelocity = abs(moveDistance/30);
+allignmentTimeStep=0.3;
 plotResults = false;
 allignmentOverload = false;
-[q,qd,qdd] = DynamicTorque(robot,startPose,allignmentVelocity,axis,timeStep,launching,allignmentOverload,plotResults);
+[q,qd,qdd] = DynamicTorque(robot,startPose,allignmentVelocity,axis,allignmentTimeStep,launching,allignmentOverload,plotResults);
 
 gritBlast = false;
 AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
@@ -133,18 +133,23 @@ AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
 plotResults = true;
 [q,qd,qdd] = DynamicTorque(robot,endPoint,velocity,axis,timeStep,launching,overload,plotResults);
 
+% figure(1); % Switch back to figure 1 tab
+
 pause(1); % Give the computer/simulation time to catch up so that the animation time is accurate
 
 % Start timer
 tic;
 
-gritBlast = false;
+gritBlast = true;
 AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
 
 % Stop timer and return time passed since tic was called
 timePassed = toc;
+approxAnimationVelocityError = norm(endPoint-startPose)/timePassed;
 
 disp(['Time passed: ',num2str(timePassed),' seconds']);
+disp(['Approximated animation velocity: ',num2str(approxAnimationVelocityError),' m/s']);
+disp(['Approximated animation velocity error vs set velocity: ',num2str(approxAnimationVelocityError-velocity),' m/s']);
 
 % Delete previous trajectory plot
 % delete(trajectoryPlot);
@@ -174,6 +179,7 @@ end
 function AnimateTrajectory (robot,trajectory,gritBlast,gritBlastHeight,animationStep)
 
 blastStreamPlot = [];
+figure(1);
 
 % Iterate the robot arms through their movement
 for trajStep = 1:animationStep:size(trajectory,1)

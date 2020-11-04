@@ -108,30 +108,26 @@ axis = -rpy; % Move along x axis
 launching = false;
 overload = false; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
 
-if overload == true
-    timeStep = 0.03;
-    allignmentTimeStep = TimeStepCalculator(robot);
-    velocity = 0.2; % set the velocity to make sure it is intially below the overload velocity
-else
-    % Calaculate the time to animate the robot through 1 tejectory step.
-    % Varies based on computer speed
-    % Use the timeStep as the time step for RMRC, so that the animation velocities match the calculated values.
-    animationTime = TimeStepCalculator(robot);
-    allignmentTimeStep = timeStep;
-    animationStep = animationTime/allignment
-end
+velocity = 0.1; % set the velocity to make sure it is intially below the overload velocity
+
+% Calaculate the time to animate the robot through 1 tejectory step.
+% Varies based on computer speed
+% Use the timeStep as the time step for RMRC, so that the animation velocities match the calculated values.
+animationTime = TimeStepCalculator(robot);
+timeStep = 0.03;
+animationStep = round(animationTime/timeStep,0,'decimals');
 
 % Slowly allgin end effector so that the blast stream is parallel to the gravity
 % vector before grit blasting
-moveDistance = 0.005;
+moveDistance = -0.005;
 startPose(1) = startPose(1)+moveDistance;
-allignmentVelocity = moveDistance/5;
+allignmentVelocity = abs(moveDistance/30);
 plotResults = false;
 allignmentOverload = false;
-[q,qd,qdd] = DynamicTorque(robot,startPose,allignmentVelocity,axis,allignmentTimeStep,launching,allignmentOverload,plotResults);
+[q,qd,qdd] = DynamicTorque(robot,startPose,allignmentVelocity,axis,timeStep,launching,allignmentOverload,plotResults);
 
 gritBlast = false;
-AnimateTrajectory(robot,q,gritBlast,gritBlastHeight);
+AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
 
 % Move robot along straight grit blasting trajectory
 plotResults = true;
@@ -143,7 +139,7 @@ pause(1); % Give the computer/simulation time to catch up so that the animation 
 tic;
 
 gritBlast = false;
-AnimateTrajectory(robot,q,gritBlast,gritBlastHeight);
+AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
 
 % Stop timer and return time passed since tic was called
 timePassed = toc;
@@ -175,12 +171,12 @@ timeStep = toc;
 
 end
 
-function AnimateTrajectory (robot,trajectory,gritBlast,gritBlastHeight)
+function AnimateTrajectory (robot,trajectory,gritBlast,gritBlastHeight,animationStep)
 
 blastStreamPlot = [];
 
 % Iterate the robot arms through their movement
-for trajStep = 1:size(trajectory,1)
+for trajStep = 1:animationStep:size(trajectory,1)
     
     Q = trajectory(trajStep,:);
     
