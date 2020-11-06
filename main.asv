@@ -45,6 +45,7 @@ toolOffset = [0,0,(200*tan(blastStreamAngle))/1000]; % Tool offset in meters
 
 toolTransform = transl(toolOffset);
 robot.tool=toolTransform;
+disp(robot.tool);
 
 % robotTransform = robot.fkine(robot.getpos);
 % Transform = robotTransform*toolTransform;
@@ -79,7 +80,7 @@ windowCorner1 = drumPosition+drumOriginToCorner1;
 drumOriginToCorner2=[0.1964,0.0550,0.5910];
 windowCorner2 = drumPosition+drumOriginToCorner2;
 
-robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
+% robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
 
 gritBlastHeight = 0.3;
 
@@ -95,7 +96,6 @@ endPoint = windowCorner2;
 endPoint(3) = endPoint(3)+gritBlastHeight;
 % endPoint(1) = endPoint(1) - 0.2;
 
-% velocity = 0.2;
 velocity = 0.1; % Below overload velocity of "approx" 0.6 m/s
 
 % Control allignment of end effector along trajectory
@@ -105,7 +105,7 @@ rpy(1)=rpy(1)-pi/4 % Allgin end effector so that the blast stream is parallel to
 axis = -rpy; % Move along x axis
 
 launching = false;
-overload = true; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
+overload = false; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
 
 velocity = 0.1; % set the velocity to make sure it is intially below the overload velocity
 
@@ -127,8 +127,8 @@ allignmentOverload = false;
 [q,qd,qdd,allignmentVelocity,robotOverload] = DynamicTorque(robot,startPose,allignmentVelocity,axis,allignmentTimeStep,launching,allignmentOverload,plotResults);
 
 if robotOverload == false
-gritBlast = false;
-AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
+    gritBlast = false;
+    AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
 end
 
 % Move robot along straight grit blasting trajectory
@@ -140,19 +140,19 @@ plotResults = true;
 pause(1); % Give the computer/simulation time to catch up so that the animation time is accurate
 
 if robotOverload == false
-% Start timer
-tic;
-
-gritBlast = true;
-AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
-
-% Stop timer and return time passed since tic was called
-timePassed = toc;
-approxAnimationVelocityError = norm(endPoint-startPose)/timePassed;
-
-disp(['Time passed: ',num2str(timePassed),' seconds']);
-disp(['Approximated animation velocity: ',num2str(approxAnimationVelocityError),' m/s']);
-disp(['Approximated animation velocity error vs programmed velocity: ',num2str(approxAnimationVelocityError-velocity),' m/s']);
+    % Start timer
+    tic;
+    
+    gritBlast = true;
+    AnimateTrajectory(robot,q,gritBlast,gritBlastHeight,animationStep);
+    
+    % Stop timer and return time passed since tic was called
+    timePassed = toc;
+    approxAnimationVelocityError = norm(endPoint-startPose)/timePassed;
+    
+    disp(['Time passed: ',num2str(timePassed),' seconds']);
+    disp(['Approximated animation velocity: ',num2str(approxAnimationVelocityError),' m/s']);
+    disp(['Approximated animation velocity error vs programmed velocity: ',num2str(approxAnimationVelocityError-velocity),' m/s']);
 end
 
 % Delete previous trajectory plot
@@ -478,7 +478,7 @@ while torqueLimit == false && velocityLimit == false && accelerationLimit == fal
         tau(i,:) = (M*qdd(i,:)' + C*qd(i,:)' + g')';                            % Calculate the joint torque needed
         for j = 1:6
             if abs(tau(i,j)) > tau_max(j)                                     % Check if torque exceeds limits
-                %                 tau(i,j) = sign(tau(i,j))*tau_max(j);                           % Cap joint torque if above limits
+                %                 tau(i,j) = sign(tau(i,j))*tau_max(j);       % Cap joint torque if above limits
                 if torqueLimit == false
                     overloadPoint = [i,j];
                 end
@@ -523,7 +523,7 @@ while torqueLimit == false && velocityLimit == false && accelerationLimit == fal
     end
     
     t = 0:dt:(steps-1)*dt;                                                      % Generate time vector
-
+    
 end
 %% Visulalisation and plotting of results
 
@@ -543,8 +543,11 @@ if overload == true || accelerationLimit == true || velocityLimit == true || tor
     end
     
     disp(['Overload joint configuration at [',num2str(rad2deg(q(overloadPoint(1),:))),'] degrees']);
-    disp(['Overload end Effector Position [',num2str(rad2deg(q(overloadPoint(1),:))),'] degrees']);
-
+    
+    endTransform = robot.fkine(robot.getpos);
+    endPosition = endTransform(1:3,4)';
+    disp(['Overload end Effector Position [',num2str(endPosition),'] meters']);
+    
     robotOverload = true;
     
 end

@@ -45,6 +45,8 @@ toolOffset = [0,0,(200*tan(blastStreamAngle))/1000]; % Tool offset in meters
 
 toolTransform = transl(toolOffset);
 robot.tool=toolTransform;
+disp("Robot Tool Transform");
+disp(robot.tool);
 
 % robotTransform = robot.fkine(robot.getpos);
 % Transform = robotTransform*toolTransform;
@@ -59,14 +61,17 @@ drum = LoadObject("Drum.ply",drumPosition,0);
 
 %% In your report, show (a) the robot base transform, (b) the drum transform and (c) the transform between the robot base and the drum
 
+robotBaseTransform = robot.base;
 disp("Robot Base Transform");
-robotBaseTransform = robot.base
+disp(robotBaseTransform);
 
+drumTransform = transl(drumPosition);
 disp("Drum Transform");
-drumTransform = transl(drumPosition)
+disp(drumTransform);
 
+robotDrumTransform = robotBaseTransform * drumTransform;
 disp("Transform Between Base and Drum");
-robotDrumTransform = robotBaseTransform * drumTransform
+disp(robotDrumTransform);
 
 %% Show how you used an inverse kinematic solver to find a starting pose that points the nozzle at one corner of the white window on the drum (2).
 %  Remember you can use “Tools->Data Tips” in the Matlab figure window to find the [x,y,z] of the corners of the white window.
@@ -79,7 +84,7 @@ windowCorner1 = drumPosition+drumOriginToCorner1;
 drumOriginToCorner2=[0.1964,0.0550,0.5910];
 windowCorner2 = drumPosition+drumOriginToCorner2;
 
-robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
+% robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
 
 gritBlastHeight = 0.3;
 
@@ -95,7 +100,6 @@ endPoint = windowCorner2;
 endPoint(3) = endPoint(3)+gritBlastHeight;
 % endPoint(1) = endPoint(1) - 0.2;
 
-% velocity = 0.2;
 velocity = 0.1; % Below overload velocity of "approx" 0.6 m/s
 
 % Control allignment of end effector along trajectory
@@ -105,7 +109,7 @@ rpy(1)=rpy(1)-pi/4 % Allgin end effector so that the blast stream is parallel to
 axis = -rpy; % Move along x axis
 
 launching = false;
-overload = true; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
+overload = false; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
 
 velocity = 0.1; % set the velocity to make sure it is intially below the overload velocity
 
@@ -478,7 +482,7 @@ while torqueLimit == false && velocityLimit == false && accelerationLimit == fal
         tau(i,:) = (M*qdd(i,:)' + C*qd(i,:)' + g')';                            % Calculate the joint torque needed
         for j = 1:6
             if abs(tau(i,j)) > tau_max(j)                                     % Check if torque exceeds limits
-                %                 tau(i,j) = sign(tau(i,j))*tau_max(j);                           % Cap joint torque if above limits
+                %                 tau(i,j) = sign(tau(i,j))*tau_max(j);       % Cap joint torque if above limits
                 if torqueLimit == false
                     overloadPoint = [i,j];
                 end
