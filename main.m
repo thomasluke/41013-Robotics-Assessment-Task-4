@@ -84,7 +84,7 @@ windowCorner1 = drumPosition+drumOriginToCorner1;
 drumOriginToCorner2=[0.1964,0.0550,0.5910];
 windowCorner2 = drumPosition+drumOriginToCorner2;
 
-% robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
+robot.animate(deg2rad([0,170,-35,0,0,0])); %initial guess for ikcon
 
 gritBlastHeight = 0.3;
 
@@ -109,7 +109,7 @@ rpy(1)=rpy(1)-pi/4 % Allgin end effector so that the blast stream is parallel to
 axis = -rpy; % Move along x axis
 
 launching = false;
-overload = false; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
+overload = true; % True only works if the path is long enough or timeStep is small. Otherwise the number of steps can approach zero
 
 velocity = 0.1; % set the velocity to make sure it is intially below the overload velocity
 
